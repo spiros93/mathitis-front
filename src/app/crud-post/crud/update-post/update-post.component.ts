@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
+import { CrudPostSearchComponent } from '../../utils/crud-post-search-criteria/crud-post-search-criteria.component';
 import { Post } from 'src/app/interfaces/post';
 import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form.component';
 import { AppService } from 'src/app/app.service';

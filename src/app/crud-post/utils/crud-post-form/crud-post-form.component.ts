@@ -25,7 +25,6 @@ export class CrudPostFormComponent implements OnChanges {
     postTitle: new FormControl('', Validators.required),
     postText: new FormControl('', Validators.required),
     photoURL: new FormControl(''),
-    userId :  new FormControl('')
   })
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -35,7 +34,6 @@ export class CrudPostFormComponent implements OnChanges {
   }
 
   onSubmit(){
-    this.form.value.userId = localStorage.getItem('user_id');
     this.post.emit(this.form.value as Post);
     this.form.reset();
     

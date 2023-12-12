@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Post } from 'src/app/interfaces/post';
 import { AppService } from 'src/app/app.service';
 import { HttpClient } from '@angular/common/http';
-import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
+import { CrudPostSearchComponent } from '../../utils/crud-post-search-criteria/crud-post-search-criteria.component';
 import { PostCardComponent } from 'src/app/post-card/post-card.component';
 import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
 import { MatCardModule } from '@angular/material/card';

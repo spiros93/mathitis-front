@@ -12,6 +12,7 @@ import { DeletePostComponent } from "./crud-post/crud/delete-post/delete-post.co
 import { ListPostsComponent } from "./crud-post/utils/list-post/list-post.component";
 import { ListUsersComponent } from "./crud-demo/utils/list-users/list-users.component";
 import { LoginFormComponent } from "./login-form/login-form.component";
+import { ReadUsersPostComponent } from "./crud-post/crud/read-user-posts/read-user-posts.component";
 
 export const routes: Routes = [
   {path: 'home', component: WelcomeComponent},
@@ -27,4 +28,5 @@ export const routes: Routes = [
   {path: 'crud-post/update', component: UpdatePostComponent},
   {path: 'crud-post/delete', component: DeletePostComponent},
   {path: 'crud-post/list', component: ListPostsComponent},
+  {path: 'crud-post/read-user-posts', component: ReadUsersPostComponent},
 ];
