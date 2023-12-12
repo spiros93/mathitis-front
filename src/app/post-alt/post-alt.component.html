@@ -1,0 +1,33 @@
+<ng-container *ngIf="post; else nodata">
+  <hr />
+  <table>
+    <tr>
+      <td class="header">Firstname</td>
+      <td>{{ post.givenName }}</td>
+    </tr>
+    <tr>
+      <td class="header">Lastname</td>
+      <td>{{ post.surName }}</td>
+    </tr>
+    <tr>
+      <td class="header">Age</td>
+      <td>{{ post.age }}</td>
+    </tr>
+    <tr>
+      <td class="header">Email</td>
+      <td>{{ post.email }}</td>
+    </tr>
+    <tr>
+      <td class="header">Address</td>
+      <td>{{ post.address }}</td>
+    </tr>
+    <tr>
+      <td class="header">UserName/td>
+      <td>{{ post.username }}</td>
+    </tr>
+  </table>
+</ng-container>
+
+<ng-template #nodata>
+  <p>No post details</p>
+</ng-template>

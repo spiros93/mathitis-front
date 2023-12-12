@@ -1,0 +1,25 @@
+<table class="table">
+  <thead class="table-info">
+    <tr>
+      <th>#</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Age</th>
+      <th colspan="2" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of postData; index as i">
+      <td>{{ i }}</td>
+      <td>{{ post.givenName }}</td>
+      <td>{{ post.surName }}</td>
+      <td>{{ post.age }}</td>
+      <td class="text-center">
+        <button (click)="onDeletePost(i)" class="btn btn-danger btn-sm">Delete</button>
+      </td>
+      <td class="text-center">
+        <button (click)="onSendPost(post)" class="btn btn-success btn-sm">Send</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,30 @@
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    CRUD Demo (requires JSON Server)
+  </button>
+  <ul class="dropdown-menu dropdown-menu-dark">
+    <li><a class="dropdown-item active" (click)="onSelection('create')" role="button">Create Post</a></li>
+    <li><a class="dropdown-item active" (click)="onSelection('read')" role="button">Read Post</a></li>
+    <li><a class="dropdown-item active" (click)="onSelection('update')" role="button">Update Post</a></li>
+    <li><a class="dropdown-item active" (click)="onSelection('delete')" role="button">Delete Post</a></li>
+    <li><a class="dropdown-item active" (click)="onSelection('list')" role="button">List Posts</a></li>
+  </ul>
+</div>
+
+<ng-container *ngIf="crudOperation" [ngSwitch]="crudOperation">
+  <ng-container *ngSwitchCase="'create'">
+    <app-create-post (postCreated)="listPosts()"></app-create-post>
+  </ng-container>
+  <ng-container *ngSwitchCase="'read'">
+    <app-read-post></app-read-post>
+  </ng-container>
+  <ng-container *ngSwitchCase="'update'">
+    <app-update-post (postUpdated)="listPosts()"></app-update-post>
+  </ng-container>
+  <ng-container *ngSwitchCase="'delete'">
+    <app-delete-post (postDeleted)="listPosts()"></app-delete-post>
+  </ng-container>
+  <ng-container *ngSwitchCase="'list'">
+    <app-list-posts></app-list-posts>
+  </ng-container>
+</ng-container>
