@@ -35,14 +35,15 @@ export class CrudPostSearchComponent {
 
   form = new FormGroup({
     postTitle: new FormControl(''),
+    userId : new FormControl(''),
   });
 
   constructor(private appService: AppService = Inject(AppService)) {}
 
   onSearch() {
-    const id = localStorage.getItem('user_id') ?? '';
+    const userId =  this.form.controls.userId.value ? this.form.controls.userId.value : localStorage.getItem('user_id') ?? '';
     const postTitle = this.form.controls.postTitle.value ?? '';
-    this.appService.getPostByPostTitlerUserId(id, postTitle).subscribe({
+    this.appService.getPostByPostTitlerUserId(userId, postTitle).subscribe({
       next: (post) => {
         console.log(post);
         this.foundPost = post;

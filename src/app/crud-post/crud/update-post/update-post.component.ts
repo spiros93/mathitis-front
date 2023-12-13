@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class UpdatePostComponent {
   foundPost: Post | undefined;
+  postId: any;
 
   constructor(
     private appService: AppService = Inject(AppService),
@@ -30,6 +31,7 @@ export class UpdatePostComponent {
   onPostFound(post: Post | undefined) {
     if (post) {
       this.foundPost = post;
+      this.postId = post._id;
       console.log('onPostFound', this.foundPost);
     } else {
       this.foundPost = undefined;
@@ -38,9 +40,9 @@ export class UpdatePostComponent {
 
   onUpdate(post: Post) {
     console.log('onUpdate', post);
-    this.appService.updatePost(post).subscribe((post) => {
+    this.appService.updatePost(post, this.postId).subscribe((post) => {
       console.log(post);
-      this.router.navigate(['/crud-demo/list']);
+      //this.router.navigate(['/crud-demo/list']);
     });
   }
 }

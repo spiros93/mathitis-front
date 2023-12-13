@@ -1,7 +1,7 @@
 export interface Post {
   _id?: string;
   postTitle: string;
-  text: string;
+  postText: string;
   userId: string;
   photoURL?: string;
 }

@@ -21,59 +21,21 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   styleUrls: ['./list-post.component.css'],
 })
 export class ListPostsComponent implements OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
-
-  posts: Post[] = [];
-  dataSource!: MatTableDataSource<Post>;
-
-  mobileColumns: string[] = ['id', 'givenName', 'surName', 'photoURL'];
-  tabletColumns: string[] = ['id', 'givenName', 'surName', 'age', 'photoURL'];
-  desktopColumns: string[] = [
-    'id',
-    'givenName',
-    'surName',
-    'age',
-    'email',
-    'address',
-    'photoURL',
-    'password',
-    'postname'
-  ];
-  displayedColumns: string[] = this.desktopColumns;
+  posts: any;
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
     this.appService.getAllPosts().subscribe((posts) => {
       this.posts = posts;
-
-      this.dataSource = new MatTableDataSource<Post>(this.posts);
-      this.dataSource.sort = this.sort;
+      if (posts) {
+        this.posts = posts;
+        console.log('onPostFound', this.posts);
+      } else {
+        this.posts= [];
+      }
     });
-
-    this.breakpointObserver
-      .observe([
-        Breakpoints.XSmall,
-        Breakpoints.Small,
-        Breakpoints.Medium,
-        Breakpoints.Large,
-        Breakpoints.XLarge,
-      ])
-      .subscribe((result) => {
-        if (result.breakpoints[Breakpoints.XSmall]) {
-          this.displayedColumns = this.mobileColumns;
-        } else if (result.breakpoints[Breakpoints.Small]) {
-          this.displayedColumns = this.tabletColumns;
-        } else if (result.breakpoints[Breakpoints.Medium]) {
-          this.displayedColumns = this.tabletColumns;
-        } else if (result.breakpoints[Breakpoints.Large]) {
-          this.displayedColumns = this.desktopColumns;
-        } else if (result.breakpoints[Breakpoints.XLarge]) {
-          this.displayedColumns = this.desktopColumns;
-        }
-      });
   }
 }

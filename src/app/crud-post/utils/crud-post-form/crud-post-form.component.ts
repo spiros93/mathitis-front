@@ -24,7 +24,7 @@ export class CrudPostFormComponent implements OnChanges {
     //id: new FormControl(''),
     postTitle: new FormControl('', Validators.required),
     postText: new FormControl('', Validators.required),
-    photoURL: new FormControl(''),
+    photoURL: new FormControl(null),
   })
 
   ngOnChanges(changes: SimpleChanges): void {

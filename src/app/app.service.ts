@@ -67,7 +67,7 @@ export class AppService {
     return this.http.get<Post[]>('http://localhost:3001/posts')
   }
 
-  getPostById(id:string){
+  getPostByUserId(id:string){
     console.log("post id " + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Post>(`http://localhost:3001/posts/userId/${id}`,{ headers })
@@ -76,7 +76,7 @@ export class AppService {
   getPostByPostTitlerUserId(id:string, postTitle:string){
     console.log("post id title" + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    return this.http.get<Post>(`http://localhost:3001/posts/title/userId?postTitle=${postTitle}`,{ headers })
+    return this.http.get<Post>(`http://localhost:3001/posts/title/userId?postTitle=${postTitle}&userId=${id}`,{ headers })
   }
 
   getPostByTitle(title:string){
@@ -96,9 +96,9 @@ export class AppService {
     return this.http.delete<Post>(`http://localhost:3001/posts/${id}`, { headers })
   }
 
-  updatePost(post: Post){
+  updatePost(post: Post, postId: string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    const postId = localStorage.getItem('post_id')
+    console.log("postaaaaaa")
     return this.http.put<Post>(`http://localhost:3001/posts/${postId}`, post, { headers })
   }
 }

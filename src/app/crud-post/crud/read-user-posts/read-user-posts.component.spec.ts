@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReadUsersPostComponent } from './read-user-posts.component';
 
-describe('ReadUsersPostComponent', () => {
+describe('PostsComponent', () => {
   let component: ReadUsersPostComponent;
   let fixture: ComponentFixture<ReadUsersPostComponent>;
 

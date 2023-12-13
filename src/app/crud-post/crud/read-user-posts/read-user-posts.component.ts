@@ -4,6 +4,7 @@ import {
   ElementRef,
   Inject,
   ViewChild,
+  OnInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppService } from 'src/app/app.service';
@@ -24,17 +25,23 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './read-user-posts.component.html',
   styleUrls: ['./read-user-posts.component.css'],
 })
-export class ReadUsersPostComponent {
-  foundPost: Post | undefined;
-
+export class ReadUsersPostComponent implements OnInit{
+  posts: any;
+  
   constructor(private appService: AppService = Inject(AppService)) {}
 
-  onPostFound(post: Post | undefined) {
-    if (post) {
-      this.foundPost = post;
-      console.log('onPostFound', this.foundPost);
-    } else {
-      this.foundPost = undefined;
-    }
-  }
+  ngOnInit() {
+    const id = localStorage.getItem('user_id') ?? '';
+    this.appService.getPostByUserId(id).subscribe((post : any) => {
+        if (post) {
+          this.posts = post;
+          console.log('onPostFound', this.posts);
+        } else {
+          this.posts= [];
+        }
+      
+    });
 }
+}
+
+
