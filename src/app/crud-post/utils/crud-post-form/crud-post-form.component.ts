@@ -29,13 +29,13 @@ export class CrudPostFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['postInput']?.currentValue){
-      this.form.patchValue(changes['postInput'].currentValue)
+      this.form.patchValue(changes['postInput'].currentValue);
     }
   }
 
   onSubmit(){
     this.post.emit(this.form.value as Post);
-    this.form.reset();
+    //this.form.reset();
     
   }
 }

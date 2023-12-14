@@ -4,46 +4,56 @@ import {
   Inject,
   OnInit,
   ViewChild,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppService } from 'src/app/app.service';
+import { AppService, RowDetailService } from 'src/app/app.service';
 import { Person } from 'src/app/interfaces/person';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-users',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSortModule, MatCardModule],
+  imports: [CommonModule, MatTableModule, MatSortModule, MatCardModule, DangerAreYouSureComponent],
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.css'],
 })
 export class ListUsersComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
+  @Output() sendUser  = new EventEmitter<Person>();
+  @Output() deleteUser = new EventEmitter<string>();
+  @Output() public userFound = new EventEmitter<Person | undefined>();
 
   users: Person[] = [];
+  foundUser: Person | undefined;
   dataSource!: MatTableDataSource<Person>;
 
-  mobileColumns: string[] = ['id', 'givenName', 'surName', 'photoURL'];
-  tabletColumns: string[] = ['id', 'givenName', 'surName', 'age', 'photoURL'];
+  mobileColumns: string[] = ['givenName', 'surName', 'photoURL'];
+  tabletColumns: string[] = [ 'givenName', 'surName', 'age', 'photoURL'];
   desktopColumns: string[] = [
-    'id',
     'givenName',
     'surName',
     'age',
     'email',
     'address',
     'photoURL',
-    'password',
-    'username'
+    'username',
+    'action'
+
   ];
   displayedColumns: string[] = this.desktopColumns;
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private router: Router = Inject(Router),
+    private rowDetailService: RowDetailService,
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +61,7 @@ export class ListUsersComponent implements OnInit {
       this.users = users;
 
       this.dataSource = new MatTableDataSource<Person>(this.users);
+      console.log(this.dataSource)
       this.dataSource.sort = this.sort;
     });
 
@@ -76,4 +87,61 @@ export class ListUsersComponent implements OnInit {
         }
       });
   }
+
+  onSendUser(user: Person){
+    this.sendUser.emit(user);
+  }
+
+  onDeleteUser(i: string){
+    var deleteUser = window.confirm('Are you absolutely sure you want to delete?');
+    if (deleteUser) {
+        this.appService.deleteUser(i).subscribe({
+          next: (user) => {
+            console.log(user);
+            this.deleteUser.emit();
+            window.location.reload() 
+          },
+          error: (error) => {
+            console.log(error)
+            //this.userNotFound = true;
+          },
+          complete: () => {'Delete Operation Completed'}
+        })
+      }    
+  }
+
+  onUpdateUser(id : string){
+    this.appService.getUserById(id).subscribe({
+      next: (user) => {
+        console.log(user);
+        //this.foundUser = user;
+        //this.userFound.emit(this.foundUser);
+        this.rowDetailService.setRowDetail(user);
+        this.router.navigate(["crud-demo/update-from-list"])
+      
+      },
+      error: (error) => {
+        this.foundUser = undefined;
+        console.log(this.foundUser);
+      },
+      complete: () => {
+        console.log('Operation Completed');
+      },
+    });
+  }
+
+  // onConfirm( i: string, iamSure: boolean){
+  //   if(iamSure){
+  //     const id = i
+  //     this.appService.deleteUser(i).subscribe({
+  //       next: (user) => {
+  //         console.log(user);
+  //         //this.userNotFound = false;
+  //         this.deleteUser.emit();
+  //       },
+  //       complete: () => {'Delete Operation Completed'}
+  //     })
+  //   }
+  // }
+
 }

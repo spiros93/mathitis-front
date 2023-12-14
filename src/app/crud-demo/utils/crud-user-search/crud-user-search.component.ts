@@ -40,8 +40,8 @@ export class CrudUserSearchComponent {
   constructor(private appService: AppService = Inject(AppService)) {}
 
   onSearch() {
-    const id = this.form.controls.id.value ?? '';
-    this.appService.getUserById(id).subscribe({
+    const username = this.form.controls.id.value ?? '';
+    this.appService.getUserName(username).subscribe({
       next: (user) => {
         console.log(user);
         this.foundUser = user;

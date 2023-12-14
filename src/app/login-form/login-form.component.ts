@@ -39,6 +39,7 @@ export class LoginFormComponent {
         );
         localStorage.setItem('user_id', decoded_token.userId);
         localStorage.setItem('is_admin', decoded_token.isAdmin);
+        localStorage.setItem('username', decoded_token.username);
         this.appService.isLoggedIn.next(true);
         this.appService.fullname.next(decoded_token.fullname);
         console.log('DECODED TOKEN', decoded_token);

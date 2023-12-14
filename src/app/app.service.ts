@@ -6,9 +6,20 @@ import { Post } from './interfaces/post';
 import { Credentials } from './interfaces/credentials';
 import { retry } from 'rxjs/operators';
 import { JWTToken } from './interfaces/jwttoken';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 
 const NESTJS_API = 'http://localhost:3001/'
+
+
+@Injectable()
+export class RowDetailService {
+  rowDetailSource: BehaviorSubject<any> = new BehaviorSubject(null);
+  rowDetail$: Observable<any> = this.rowDetailSource.asObservable();
+  setRowDetail(detail:any) {
+      this.rowDetailSource.next(detail);
+  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +31,20 @@ export class AppService {
   constructor(private http: HttpClient = inject(HttpClient)) { }
 
   getAllUsers(){
-    console.log("all users")
-    return this.http.get<Person[]>('http://localhost:3001/users')
+    const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
+    return this.http.get<Person[]>('http://localhost:3001/users',{ headers })
   }
 
   getUserById(id:string){
     console.log("user id" + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Person>(`http://localhost:3001/users/${id}`,{ headers })
+  }
+
+  getUserName(username:string){
+    console.log("user username" + username)
+    const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
+    return this.http.get<Person>(`http://localhost:3001/users/username/${username}`,{ headers })
   }
 
   addUser(user: Person){
@@ -37,14 +54,15 @@ export class AppService {
 
   deleteUser(id:string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    const userId = localStorage.getItem('user_id')
-    return this.http.delete<Person>(`http://localhost:3001/users/${userId}`, { headers })
+   // const userId = localStorage.getItem('user_id')
+    return this.http.delete<Person>(`http://localhost:3001/users/${id}`, { headers })
   }
 
-  updateUser(user: Person){
+  updateUser(user: Person, id: string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    const userId = localStorage.getItem('user_id')
-    return this.http.put<Person>(`http://localhost:3001/users/${userId}`, user, { headers })
+    console.log(user)
+    //const userId = localStorage.getItem('user_id')
+    return this.http.put<Person>(`http://localhost:3001/users/${id}`, user, { headers })
   }
 
   // NestJS calls

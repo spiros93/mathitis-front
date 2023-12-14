@@ -3,6 +3,7 @@ export interface Post {
   postTitle: string;
   postText: string;
   userId: string;
+  username: string;
   photoURL?: string;
 }
 

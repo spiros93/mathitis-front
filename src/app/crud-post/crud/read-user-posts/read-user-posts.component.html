@@ -5,6 +5,8 @@
       <a routerLink="">{{ post.postTitle }}</a>
       <p><img class="responsive" [src]="post.photoURL" /></p>
       <p>{{ post.postText}}</p>
+      <p><strong>Created Date: </strong>{{ post.createdAt}}</p>
+      <p><strong>Created By: </strong>{{ post.username}}</p>
     </li>
   </ul>
 </div>
