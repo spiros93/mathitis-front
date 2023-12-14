@@ -9,7 +9,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import {provideRouter} from '@angular/router';
 import { routes } from './app.routes';
 import { RowDetailService } from 'src/app/app.service';
-import { provideToastr  } from 'ngx-toastr';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export function tokenGetter(){
   return localStorage.getItem('access_token');
@@ -29,6 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     RowDetailService,
-    provideToastr()
+    MatSnackBar,
 ],
 };

@@ -35,7 +35,7 @@ export class CrudPostFormComponent implements OnChanges {
 
   onSubmit(){
     this.post.emit(this.form.value as Post);
-    //this.form.reset();
+    this.form.reset();
     
   }
 }
