@@ -69,6 +69,7 @@ export class AppService {
 
   login(credentials: Credentials){
     console.log(credentials)
+    this.isLoggedIn.next(true);
     return this.http.post<JWTToken>(`${NESTJS_API}auth/login`, credentials);
   }
 
@@ -97,7 +98,7 @@ export class AppService {
     return this.http.get<Post>(`http://localhost:3001/posts/title/userId?postTitle=${postTitle}&userId=${id}`,{ headers })
   }
 
-  getPostByTitle(title:string){
+  getPostByTitle(title: string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Post>(`http://localhost:3001/posts/${title}`,{ headers })
   }

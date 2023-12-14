@@ -7,11 +7,12 @@ import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import {MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import {NotificationHandlerComponent} from '../../../notification-handler/notification-handler.component';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [CommonModule, ReactiveFormComponent, CrudPostFormComponent, MatCardModule],
+  imports: [CommonModule, ReactiveFormComponent, CrudPostFormComponent, MatCardModule, NotificationHandlerComponent],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
 })
@@ -21,28 +22,25 @@ export class CreatePostComponent {
   durationInSeconds = 5;
   constructor(
     private appService: AppService = Inject(AppService),
-    private _snackBar: MatSnackBar
-
+    private _snackBar: MatSnackBar,
+    private router : Router,
+    private notificationHandler : NotificationHandlerComponent
   ){}
 
   onPost(post: Post){
+    post.photoURL = post.photoURL?.length ==0 ? undefined : post.photoURL;
     const username = localStorage.getItem('username') ?? '';
     post.username = username;
     console.log(post);
     this.appService.addPost(post).subscribe(post => {
       console.log("success");
-      this._snackBar.open('Post Created Successfully',"Ok",{
-        verticalPosition : this.verticalPosition,
-        duration: this.durationInSeconds * 1000,
-      })
-      
+      this.notificationHandler.onNotification('post created successfully!', 'top', 3);
+      this.router.navigate(["/crud-post/read-user-posts"])
       this.postCreated.emit();
     }, err => {
-      this._snackBar.open(err.error.message,"Ok",{
-        verticalPosition : this.verticalPosition,
-        duration: this.durationInSeconds * 1000,
-      })
+      this.notificationHandler.onNotification(err.error.message, 'top', 3);
     });
+   
   }
 
       

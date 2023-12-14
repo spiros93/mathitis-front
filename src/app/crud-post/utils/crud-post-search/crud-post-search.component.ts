@@ -12,7 +12,7 @@ import { Post } from 'src/app/interfaces/post';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
@@ -34,14 +34,14 @@ export class CrudPostSearchComponent {
   @Output() postFound = new EventEmitter<Post | undefined>();
 
   form = new FormGroup({
-    id: new FormControl(''),
+    title: new FormControl('', Validators.required),
   });
 
   constructor(private appService: AppService = Inject(AppService)) {}
 
   onSearch() {
-    const id = this.form.controls.id.value ?? '';
-    this.appService.getPostByTitle(id).subscribe({
+    const title = this.form.controls.title.value ?? '';
+    this.appService.getPostByTitle(title).subscribe({
       next: (post) => {
         console.log(post);
         this.foundPost = post;

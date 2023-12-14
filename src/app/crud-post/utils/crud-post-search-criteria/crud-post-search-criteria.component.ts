@@ -12,7 +12,7 @@ import { Post } from 'src/app/interfaces/post';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
@@ -34,15 +34,16 @@ export class CrudPostSearchComponent {
   @Output() postFound = new EventEmitter<Post | undefined>();
 
   form = new FormGroup({
-    postTitle: new FormControl(''),
     userId : new FormControl(''),
+    searchTitle: new FormControl('', Validators.required)
   });
 
   constructor(private appService: AppService = Inject(AppService)) {}
 
   onSearch() {
     const userId =  this.form.controls.userId.value ? this.form.controls.userId.value : localStorage.getItem('user_id') ?? '';
-    const postTitle = this.form.controls.postTitle.value ?? '';
+    const postTitle = this.form.controls.searchTitle.value ?? '';
+    console.log("users post " +userId +" " +  postTitle)
     this.appService.getPostByPostTitlerUserId(userId, postTitle).subscribe({
       next: (post) => {
         console.log(post);

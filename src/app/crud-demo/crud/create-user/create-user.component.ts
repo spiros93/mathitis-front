@@ -22,6 +22,7 @@ export class CreateUserComponent {
   ){}
 
   onUser(user: Person){
+    user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL
     this.appService.addUser(user).subscribe(user => {
       console.log(user);
       this.userCreated.emit();

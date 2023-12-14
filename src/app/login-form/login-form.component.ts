@@ -9,24 +9,26 @@ import { AppService } from '../app.service';
 import { Credentials } from '../interfaces/credentials';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import {NotificationHandlerComponent} from '../notification-handler/notification-handler.component';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatCardModule],
+  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatCardModule, NotificationHandlerComponent],
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
   form = new FormGroup({
     username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    password: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
   });
 
   constructor(
     private appService: AppService = Inject(AppService),
     private jwtHelperService: JwtHelperService = Inject(JwtHelperService),
-    private router: Router = Inject(Router)
+    private router: Router = Inject(Router),
+    private notificationHandler : NotificationHandlerComponent
     ){}
 
   onSubmit(){
@@ -46,6 +48,7 @@ export class LoginFormComponent {
         this.router.navigate(['/home']);
       },
       error: (error) => {
+        this.notificationHandler.onNotification('Invalid Username Or Password', 'top', 3);
         console.error('ERROR:', error)
       }
     })
