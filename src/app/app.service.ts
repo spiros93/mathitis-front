@@ -27,6 +27,7 @@ export class RowDetailService {
 export class AppService {
   isLoggedIn= new BehaviorSubject<boolean>(false);
   fullname = new BehaviorSubject<string>('');
+  photoUrl = new BehaviorSubject<string>('');
 
   constructor(private http: HttpClient = inject(HttpClient)) { }
 

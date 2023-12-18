@@ -6,7 +6,7 @@
     <mat-error
       *ngIf="form.controls.postTitle.invalid && form.controls.postTitle.touched"
     >
-      Surname is required.
+      Post title is required.
     </mat-error>
   </mat-form-field>
 
@@ -16,7 +16,7 @@
   <mat-error
     *ngIf="form.controls.postText.invalid && form.controls.postText.touched"
   >
-    Given name is required.
+    Post text is required.
   </mat-error>
 </mat-form-field>
 
@@ -24,9 +24,8 @@
     <mat-label>Photo URL</mat-label>
     <input matInput type="text" formControlName="photoURL" />
   </mat-form-field>
-
-
   <button
+    mat-button
     mat-raised-button
     color="primary"
     type="submit"

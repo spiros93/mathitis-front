@@ -42,13 +42,17 @@ export class LoginFormComponent {
         localStorage.setItem('user_id', decoded_token.userId);
         localStorage.setItem('is_admin', decoded_token.isAdmin);
         localStorage.setItem('username', decoded_token.username);
+        localStorage.setItem('photoUrl', decoded_token.photoUrl);
         this.appService.isLoggedIn.next(true);
         this.appService.fullname.next(decoded_token.fullname);
+        this.appService.photoUrl.next(decoded_token.photoUrl);
         console.log('DECODED TOKEN', decoded_token);
         this.router.navigate(['/home']);
       },
       error: (error) => {
         this.notificationHandler.onNotification('Invalid Username Or Password', 'top', 3);
+        this.appService.isLoggedIn.next(false);
+        this.appService.fullname.next('');
         console.error('ERROR:', error)
       }
     })

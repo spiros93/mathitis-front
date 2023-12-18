@@ -34,14 +34,11 @@ export class CreatePostComponent {
     console.log(post);
     this.appService.addPost(post).subscribe(post => {
       console.log("success");
-      this.notificationHandler.onNotification('post created successfully!', 'top', 3);
+      this.notificationHandler.onNotification('Post created successfully!', 'top', 3);
       this.router.navigate(["/crud-post/read-user-posts"])
       this.postCreated.emit();
     }, err => {
       this.notificationHandler.onNotification(err.error.message, 'top', 3);
     });
-   
-  }
-
-      
+  }      
 }

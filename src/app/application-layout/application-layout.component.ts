@@ -36,6 +36,7 @@ export class ApplicationLayoutComponent {
 
     isLoggedIn$ = this.appService.isLoggedIn;
     fullname$ = this.appService.fullname;
+    photoUrl$ = this.appService.photoUrl;
 
   constructor(
     private breakpointObserver: BreakpointObserver,

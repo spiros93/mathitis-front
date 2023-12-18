@@ -28,7 +28,7 @@ export class CrudUserFormComponent implements OnChanges {
     email: new FormControl('', [Validators.required, Validators.email]),
     address: new FormControl('', Validators.required),
     photoURL: new FormControl(''),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
     username: new FormControl('', [Validators.required]),
   })
 
@@ -40,7 +40,6 @@ export class CrudUserFormComponent implements OnChanges {
 
   onSubmit(){
     this.person.emit(this.form.value as Person);
-    this.form.reset();
-    console.log("test")
+    //this.form.reset();
   }
 }

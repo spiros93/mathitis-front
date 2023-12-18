@@ -1,6 +1,5 @@
 import { Routes } from "@angular/router";
 import { WelcomeComponent } from "./welcome/welcome.component";
-import { EventBindComponent } from "./event-bind/event-bind.component";
 import { CreateUserComponent } from "./crud-demo/crud/create-user/create-user.component";
 import { ReadUserComponent } from "./crud-demo/crud/read-user/read-user.component";
 import { UpdateUserComponent } from "./crud-demo/crud/update-user/update-user.component";
@@ -17,7 +16,6 @@ import { UpdateUserListComponent } from "./crud-demo/crud/update-user-from-list/
 
 export const routes: Routes = [
   {path: 'home', component: WelcomeComponent},
-  {path: 'event-bind', component: EventBindComponent},
   {path: 'login', component: LoginFormComponent},
   {path: 'crud-demo/create', component: CreateUserComponent},
   {path: 'crud-demo/read', component: ReadUserComponent},

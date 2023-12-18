@@ -23,7 +23,7 @@
       <mat-expansion-panel
       style="box-shadow: none; font-size: 16px; margin-left: 0"
     >
-      <mat-expansion-panel-header>
+      <mat-expansion-panel-header *ngIf="isLoggedIn$ | async">
         <mat-panel-title> Post Actions</mat-panel-title>
       </mat-expansion-panel-header>
 
@@ -39,7 +39,7 @@
     <mat-expansion-panel
     style="box-shadow: none; font-size: 16px; margin-left: 0"
   >
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header *ngIf="isLoggedIn$ | async">
       <mat-panel-title> User Actions</mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -68,7 +68,7 @@
       <button *ngIf="!(isLoggedIn$ | async)" mat-icon-button routerLink="login">
         <mat-icon>account_circle</mat-icon>
       </button>
-      <span *ngIf="isLoggedIn$ | async">{{ fullname$ | async}}</span>
+        <span *ngIf="isLoggedIn$ | async" mat-icon-button routerLink="crud-demo/update">{{ fullname$ | async }} <mat-icon>account_circle {{photoUrl$}}</mat-icon></span>
     </mat-toolbar>
     <div class="container"><router-outlet></router-outlet></div>
     <footer class="footer">
