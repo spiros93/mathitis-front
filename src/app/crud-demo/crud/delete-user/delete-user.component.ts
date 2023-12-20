@@ -8,6 +8,7 @@ import { PersonCardComponent } from 'src/app/person-card/person-card.component';
 import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
 
 @Component({
   selector: 'app-delete-user',
@@ -25,7 +26,8 @@ export class DeleteUserComponent {
   constructor(
     private appService: AppService = Inject(AppService),
     private http: HttpClient = Inject(HttpClient),
-    private router: Router = Inject(Router)
+    private router: Router = Inject(Router),
+    private notificationHandler : NotificationHandlerComponent
   ){}
 
   onClick(){
@@ -65,14 +67,22 @@ export class DeleteUserComponent {
   onConfirm(iamSure: boolean){
     if(iamSure && this.foundUser){
       const id = this.foundUser._id ?? ''
+      const isAdmin=localStorage.getItem('is_admin');
       this.appService.deleteUser(id).subscribe({
         next: (user) => {
           console.log(user);
           this.userNotFound = false;
+          this.notificationHandler.onNotification("Success Delete User", 'top', 3);
           this.userDeleted.emit();
+          if(isAdmin === 'true'){
+            this.router.navigate(['/crud-demo/list']);
+          }else{
+            this.router.navigate(['/login']);
+          }
         },
         error: (error) => {
           console.log(error)
+          this.notificationHandler.onNotification(error.error.message, 'top', 3);
           this.userNotFound = true;
         },
         complete: () => {'Delete Operation Completed'}

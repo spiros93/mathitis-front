@@ -23,30 +23,30 @@
       <mat-expansion-panel
       style="box-shadow: none; font-size: 16px; margin-left: 0"
     >
-      <mat-expansion-panel-header *ngIf="isLoggedIn$ | async">
+      <mat-expansion-panel-header >
         <mat-panel-title> Post Actions</mat-panel-title>
       </mat-expansion-panel-header>
 
-      <a mat-list-item routerLink="crud-post/create">Create Post</a>
-      <a mat-list-item routerLink="crud-post/read">Read Post</a>
-      <a mat-list-item routerLink="crud-post/update">Update Post</a>
-      <a mat-list-item routerLink="crud-post/delete">Delete Post</a>
-      <a mat-list-item routerLink="crud-post/read-user-posts">Posts From User</a>
-      <a mat-list-item routerLink="crud-post/list">List All Post</a>
+      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/create">Create Post</a>
+      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/read">Read Post</a>
+      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/update">Update Post</a>
+      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/delete">Delete Post</a>
+      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/read-user-posts">Posts From User</a>
+      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/list">List All Post</a>
 
     </mat-expansion-panel>
 
     <mat-expansion-panel
     style="box-shadow: none; font-size: 16px; margin-left: 0"
   >
-    <mat-expansion-panel-header *ngIf="isLoggedIn$ | async">
+    <mat-expansion-panel-header >
       <mat-panel-title> User Actions</mat-panel-title>
     </mat-expansion-panel-header>
 
-    <a mat-list-item routerLink="crud-demo/read">Read User</a>
-    <a mat-list-item routerLink="crud-demo/update">Update User</a>
-    <a mat-list-item routerLink="crud-demo/delete">Delete User</a>
-    <a mat-list-item routerLink="crud-demo/list">List Users</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/read">Read User</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/update">Update User</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/delete">Delete User</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/list">List Users</a>
 
   </mat-expansion-panel>
 
@@ -68,7 +68,8 @@
       <button *ngIf="!(isLoggedIn$ | async)" mat-icon-button routerLink="login">
         <mat-icon>account_circle</mat-icon>
       </button>
-        <span *ngIf="isLoggedIn$ | async" mat-icon-button routerLink="crud-demo/update">{{ fullname$ | async }} <mat-icon>account_circle {{photoUrl$}}</mat-icon></span>
+        <span *ngIf="isLoggedIn$ | async" mat-icon-button routerLink="crud-demo/update">{{ fullname$ | async }}</span>
+        <span  mat-icon-button routerLink="crud-demo/read"> <mat-icon class = "left-gap" *ngIf="photoUrl$ | async"><img class ="user" [src]="photoUrl$ | async"/></mat-icon> </span>
     </mat-toolbar>
     <div class="container"><router-outlet></router-outlet></div>
     <footer class="footer">
@@ -76,3 +77,35 @@
     </footer>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+
+
+<!-- <mat-toolbar color="primary">
+  <span class="fill-remaining-space">
+    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+    <span (mouseleave)="menuTrigger.closeMenu()">
+      <button mat-menu-item>
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+  </button>
+  <button mat-menu-item>
+        <mat-icon>people_outline</mat-icon>
+        <span>Connecting</span>
+      </button>
+  <button mat-menu-item>
+        <mat-icon>videocam</mat-icon>
+        <span>Let's talk</span>
+      </button>
+  <button mat-menu-item>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+  </span>
+  </mat-menu>
+  </span>
+  <span class="fill-remaining-space">Application Title</span>
+</mat-toolbar> -->

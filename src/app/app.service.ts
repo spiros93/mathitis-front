@@ -61,22 +61,24 @@ export class AppService {
 
   updateUser(user: Person, id: string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    console.log(user)
-    //const userId = localStorage.getItem('user_id')
+    console.log("id " +id)
+    console.log("user " + user)
+    //const userId = id :localStorage.getItem('user_id')
     return this.http.put<Person>(`http://localhost:3001/users/${id}`, user, { headers })
   }
 
   // NestJS calls
 
   login(credentials: Credentials){
-    console.log(credentials)
-    this.isLoggedIn.next(true);
     return this.http.post<JWTToken>(`${NESTJS_API}auth/login`, credentials);
   }
 
   logout() {
     this.isLoggedIn.next(false);
     this.fullname.next('');
+    this.photoUrl.next('');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('is_admin');
     localStorage.removeItem('access_token');
   }
 

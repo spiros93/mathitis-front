@@ -16,10 +16,13 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./crud-user-form.component.css']
 })
 export class CrudUserFormComponent implements OnChanges {
+
   @Input() title = 'User Form';
   @Input() personInput: Person | undefined;
   @Output() person = new EventEmitter<Person>();
 
+ 
+  userId: string | undefined;
   form = new FormGroup({
     //id: new FormControl(''),
     givenName: new FormControl('', Validators.required),
@@ -41,5 +44,11 @@ export class CrudUserFormComponent implements OnChanges {
   onSubmit(){
     this.person.emit(this.form.value as Person);
     //this.form.reset();
+  }
+
+  ngOnInit(): void {
+   this.userId = localStorage.getItem('user_id') ?? undefined;
+   console.log(this.userId)
+
   }
 }

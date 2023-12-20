@@ -28,7 +28,7 @@ export class CreateUserComponent {
   ){}
 
   onUser(user: Person){
-    user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL
+    user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.addUser(user).subscribe(user => {
       console.log(user);
       this.notificationHandler.onNotification('User created successfully!', 'top', 3);

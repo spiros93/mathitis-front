@@ -52,7 +52,7 @@
     <input matInput type="text" formControlName="photoURL" />
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field *ngIf="!userId">
     <mat-label>Username</mat-label>
     <input matInput type="text" formControlName="username" />
     <mat-error
@@ -62,7 +62,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field *ngIf="!userId">
     <mat-label>Password</mat-label>
     <input matInput type="password" formControlName="password" />
     <div>

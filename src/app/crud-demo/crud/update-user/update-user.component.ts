@@ -6,6 +6,8 @@ import { CrudUserFormComponent } from '../../utils/crud-user-form/crud-user-form
 import { AppService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
+
 
 @Component({
   selector: 'app-update-user',
@@ -14,7 +16,7 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     CrudUserSearchComponent,
     CrudUserFormComponent,
-    MatCardModule,
+    MatCardModule
   ],
   templateUrl: './update-user.component.html',
   styleUrls: ['./update-user.component.css'],
@@ -24,23 +26,48 @@ export class UpdateUserComponent {
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private router: Router
+    private router: Router,
+    private notificationHandler : NotificationHandlerComponent
   ) {}
 
-  onUserFound(user: Person | undefined) {
-    if (user) {
-      this.foundUser = user;
-      console.log('onUserFound', this.foundUser);
-    } else {
-      this.foundUser = undefined;
-    }
+  // onUserFound(user: Person | undefined) {
+  //   if (user) {
+  //     this.foundUser = user;
+  //     console.log('onUserFound', this.foundUser);
+  //   } else {
+  //     this.foundUser = undefined;
+  //   }
+  // }
+
+
+  ngOnInit(): void {
+    const id = localStorage.getItem('user_id') ?? '';
+    console.log(id);
+    this.appService.getUserById(id).subscribe((user) => {
+      
+      if (user) {
+        this.foundUser = user;
+        console.log('onPostFound', this.foundUser);
+      } else {
+        this.foundUser= undefined;
+      }
+    });
   }
 
   onUpdate(user: Person) {
     console.log('onUpdate', user);
-    this.appService.updateUser(user,'').subscribe((user) => {
-      console.log(user);
-      this.router.navigate(['/crud-demo/list']);
-    });
+    const id = localStorage.getItem('user_id') ?? '';
+    const isAdmin = localStorage.getItem('is_admin');
+    user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
+    this.appService.updateUser(user, id).subscribe((user) => {
+      if (isAdmin === 'true'){
+        console.log("1")
+        this.router.navigate(['/crud-demo/list']);
+      }else{
+        console.log("2")
+        this.router.navigate(['/crud-demo/read']);
+      }
+    }, err =>{
+      this.notificationHandler.onNotification(err.error.message, 'top', 3)});
   }
 }

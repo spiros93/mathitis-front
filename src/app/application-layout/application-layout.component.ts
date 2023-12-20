@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterModule } from '@angular/router';
 import { AppService } from '../app.service';
+import { MatMenuModule} from '@angular/material/menu';
 
 @Component({
   selector: 'app-application-layout',
@@ -22,6 +23,7 @@ import { AppService } from '../app.service';
     MatIconModule,
     MatExpansionModule,
     RouterModule,
+    MatMenuModule
   ],
   templateUrl: './application-layout.component.html',
   styleUrls: ['./application-layout.component.css'],

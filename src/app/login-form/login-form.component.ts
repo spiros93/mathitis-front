@@ -42,7 +42,6 @@ export class LoginFormComponent {
         localStorage.setItem('user_id', decoded_token.userId);
         localStorage.setItem('is_admin', decoded_token.isAdmin);
         localStorage.setItem('username', decoded_token.username);
-        localStorage.setItem('photoUrl', decoded_token.photoUrl);
         this.appService.isLoggedIn.next(true);
         this.appService.fullname.next(decoded_token.fullname);
         this.appService.photoUrl.next(decoded_token.photoUrl);

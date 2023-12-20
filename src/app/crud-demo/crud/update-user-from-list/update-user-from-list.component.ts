@@ -6,6 +6,7 @@ import { CrudUserFormComponent } from '../../utils/crud-user-form/crud-user-form
 import { AppService, RowDetailService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
 
 @Component({
   selector: 'app-update-user-from-list',
@@ -30,6 +31,7 @@ export class UpdateUserListComponent {
     private appService: AppService = Inject(AppService),
     private router: Router,
     private rowDetailService: RowDetailService,
+    private notificationHandler : NotificationHandlerComponent
   ) {}
 
   ngOnInit() {
@@ -47,9 +49,12 @@ export class UpdateUserListComponent {
   onUpdate(user: Person) {
     console.log('onUpdate', user);
     const id = this.userId || '';
+    user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.updateUser(user, id).subscribe((user) => {
       console.log(user);
       this.router.navigate(['/crud-demo/list']);
-    });
+    }, err =>{
+      this.notificationHandler.onNotification(err.error.message, 'top', 3)}
+    );
   }
 }
