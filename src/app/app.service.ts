@@ -25,7 +25,7 @@ export class RowDetailService {
   providedIn: 'root'
 })
 export class AppService {
-  isLoggedIn= new BehaviorSubject<boolean>(false);
+  isLoggedIn= localStorage.getItem('access_token') ? new BehaviorSubject<boolean>(true) : new BehaviorSubject<boolean>(false);
   fullname = new BehaviorSubject<string>('');
   photoUrl = new BehaviorSubject<string>('');
 
