@@ -4,8 +4,8 @@ import { CrudPostSearchComponent } from '../../utils/crud-post-search-criteria/c
 import { Post } from 'src/app/interfaces/post';
 import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form.component';
 import { AppService } from 'src/app/app.service';
-import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import {NotificationHandlerComponent} from '../../../notification-handler/notification-handler.component';
 
 @Component({
   selector: 'app-update-post',
@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
     CrudPostSearchComponent,
     CrudPostFormComponent,
     MatCardModule,
+    NotificationHandlerComponent
   ],
   templateUrl: './update-post.component.html',
   styleUrls: ['./update-post.component.css'],
@@ -25,7 +26,7 @@ export class UpdatePostComponent {
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private router: Router
+    private notificationHandler : NotificationHandlerComponent
   ) {}
 
   onPostFound(post: Post | undefined) {
@@ -40,9 +41,13 @@ export class UpdatePostComponent {
 
   onUpdate(post: Post) {
     console.log('onUpdate', post);
+    post.photoURL = post.photoURL?.length ==0 ? undefined : post.photoURL;
     this.appService.updatePost(post, this.postId).subscribe((post) => {
       console.log(post);
-      //this.router.navigate(['/crud-demo/list']);
+      window.location.reload()
+      this.notificationHandler.onNotification('Post updated successfully!', 'top', 3);
+    }, err => {
+      this.notificationHandler.onNotification(err.error.message, 'top', 3);
     });
   }
 }

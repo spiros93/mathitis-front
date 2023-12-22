@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Post } from 'src/app/interfaces/post';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,14 +21,13 @@ export class CrudPostFormComponent implements OnChanges {
   @Output() post = new EventEmitter<Post>();
 
   form = new FormGroup({
-    //id: new FormControl(''),
     postTitle: new FormControl('', Validators.required),
     postText: new FormControl('', Validators.required),
     photoURL: new FormControl(null),
   })
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['postInput']?.currentValue){
+        if(changes['postInput']?.currentValue){
       this.form.patchValue(changes['postInput'].currentValue);
     }
   }

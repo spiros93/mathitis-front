@@ -28,5 +28,4 @@ export const routes: Routes = [
   {path: 'crud-post/delete', component: DeletePostComponent},
   {path: 'crud-post/list', component: ListPostsComponent},
   {path: 'crud-post/read-user-posts', component: ReadUsersPostComponent},
-  {path: 'crud-demo/update-from-list', component: UpdateUserListComponent},
-];
+  {path: 'crud-demo/update-from-list', component: UpdateUserListComponent}];

@@ -7,15 +7,19 @@
       <p>{{ post.postText}}</p>
       <p><strong>Created Date: </strong>{{ post.createdAt}}</p>
       <p><strong>Created By: </strong>{{ post.username}}</p>
-      <mat-card-content>
-        <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-      >
-        Update
-      </button>
-      </mat-card-content>
+      
+        <p mat-cell>
+          <button (click)="onDeletePost(post._id)" class="btn btn-danger btn-sm">Delete</button> | <button (click)="onUpdatePost(post.postTitle, post._id)" class="btn btn-danger btn-sm">Update</button>
+        </p>
+        <app-crud-post-form
+        *ngIf="foundPost && post.postTitle === foundPost.postTitle"
+        [title]="'Update Post'"
+        [postInput]="foundPost"
+        (post)="onUpdate($event)"
+      ></app-crud-post-form>
+ 
     </li>
+    
   </ul>
+  
 </div>
