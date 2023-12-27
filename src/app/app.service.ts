@@ -25,9 +25,11 @@ export class RowDetailService {
   providedIn: 'root'
 })
 export class AppService {
+  
   isLoggedIn= localStorage.getItem('access_token') ? new BehaviorSubject<boolean>(true) : new BehaviorSubject<boolean>(false);
-  fullname = new BehaviorSubject<string>('');
-  photoUrl = new BehaviorSubject<string>('');
+  fullname= localStorage.getItem('fullname') ? new BehaviorSubject<string>(localStorage.getItem('fullname') || '') : new BehaviorSubject<string>('');
+  photoUrl= localStorage.getItem('photoUrl') ? new BehaviorSubject<string>(localStorage.getItem('photoUrl') || '') : new BehaviorSubject<string>('');
+
 
   constructor(private http: HttpClient = inject(HttpClient)) { }
 
@@ -78,8 +80,12 @@ export class AppService {
     this.fullname.next('');
     this.photoUrl.next('');
     localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
     localStorage.removeItem('is_admin');
     localStorage.removeItem('access_token');
+    localStorage.removeItem('fullname');
+    localStorage.removeItem('photoUrl');
+    console.log ("logout " + localStorage.getItem('photoUrl'))
   }
 
   /************************************ post **********************************/

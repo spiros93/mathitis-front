@@ -10,6 +10,7 @@ import { Credentials } from '../interfaces/credentials';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {NotificationHandlerComponent} from '../notification-handler/notification-handler.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login-form',
@@ -18,7 +19,13 @@ import {NotificationHandlerComponent} from '../notification-handler/notification
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
+
 export class LoginFormComponent {
+  a = new BehaviorSubject<boolean>(false);
+  if () {
+    this.isAdmin = new BehaviorSubject<boolean>(false);
+  }
+  isAdmin = new BehaviorSubject<boolean>(false);
   form = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
@@ -31,6 +38,7 @@ export class LoginFormComponent {
     private notificationHandler : NotificationHandlerComponent
     ){}
 
+
   onSubmit(){
     this.appService.login(this.form.value as Credentials).subscribe({
       next: (response) => {
@@ -40,8 +48,12 @@ export class LoginFormComponent {
           response.access_token
         );
         localStorage.setItem('user_id', decoded_token.userId);
-        localStorage.setItem('is_admin', decoded_token.isAdmin);
         localStorage.setItem('username', decoded_token.username);
+        localStorage.setItem('fullname', decoded_token.fullname);
+        localStorage.setItem('photoUrl', decoded_token.photoUrl);
+        this.isAdmin.next(decoded_token.isAdmin)
+        console.log(this.isAdmin)
+        
         this.appService.isLoggedIn.next(true);
         this.appService.fullname.next(decoded_token.fullname);
         this.appService.photoUrl.next(decoded_token.photoUrl);
@@ -52,6 +64,7 @@ export class LoginFormComponent {
         this.notificationHandler.onNotification('Invalid Username Or Password', 'top', 3);
         this.appService.isLoggedIn.next(false);
         this.appService.fullname.next('');
+        this.appService.photoUrl.next('');
         console.error('ERROR:', error)
       }
     })

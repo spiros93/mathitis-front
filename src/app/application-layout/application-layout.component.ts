@@ -11,6 +11,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { RouterModule } from '@angular/router';
 import { AppService } from '../app.service';
 import { MatMenuModule} from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application-layout',
@@ -42,6 +43,12 @@ export class ApplicationLayoutComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private appService: AppService = Inject(AppService)
+    private appService: AppService = Inject(AppService),
+    private router: Router = Inject(Router)
     ) {}
+
+    logout(){
+      this.appService.logout();
+      this.router.navigate(['/login']);
+    }
 }
