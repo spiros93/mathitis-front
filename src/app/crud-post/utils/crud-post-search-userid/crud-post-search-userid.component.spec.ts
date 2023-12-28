@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrudPostSearchComponent } from './crud-post-search-userid.component';
+import { CrudPostSearchByUserIdComponent } from './crud-post-search-userid.component';
 
-describe('CrudPostSearchComponent', () => {
-  let component: CrudPostSearchComponent;
-  let fixture: ComponentFixture<CrudPostSearchComponent>;
+describe('CrudPostSearchByUserIdComponent', () => {
+  let component: CrudPostSearchByUserIdComponent;
+  let fixture: ComponentFixture<CrudPostSearchByUserIdComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CrudPostSearchComponent]
+      imports: [CrudPostSearchByUserIdComponent]
     });
-    fixture = TestBed.createComponent(CrudPostSearchComponent);
+    fixture = TestBed.createComponent(CrudPostSearchByUserIdComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

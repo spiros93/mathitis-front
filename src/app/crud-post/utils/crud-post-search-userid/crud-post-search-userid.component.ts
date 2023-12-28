@@ -29,7 +29,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './crud-post-search-userid.component.html',
   styleUrls: ['./crud-post-search-userid.component.css'],
 })
-export class CrudPostSearchComponent {
+export class CrudPostSearchByUserIdComponent {
   foundPost: Post | undefined;
   @Output() postFound = new EventEmitter<Post | undefined>();
 

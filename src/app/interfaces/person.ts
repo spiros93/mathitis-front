@@ -10,4 +10,9 @@ export interface Person {
   photoURL?: string;
 }
 
+export interface ChangePassword {
+  Currentassword: string,
+  Newassword: string,
+  ConfirmPassword: string
+}
 

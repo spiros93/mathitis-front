@@ -3,6 +3,7 @@ import { WelcomeComponent } from "./welcome/welcome.component";
 import { CreateUserComponent } from "./crud-demo/crud/create-user/create-user.component";
 import { ReadUserComponent } from "./crud-demo/crud/read-user/read-user.component";
 import { UpdateUserComponent } from "./crud-demo/crud/update-user/update-user.component";
+import { UpdateUserPasswordComponent } from "./crud-demo/crud/update-user-password/update-user-password.component";
 import { DeleteUserComponent } from "./crud-demo/crud/delete-user/delete-user.component";
 import { CreatePostComponent } from "./crud-post/crud/create-post/create-post.component";
 import { ReadPostComponent } from "./crud-post/crud/read-post/read-post.component";
@@ -20,6 +21,7 @@ export const routes: Routes = [
   {path: 'crud-demo/create', component: CreateUserComponent},
   {path: 'crud-demo/read', component: ReadUserComponent},
   {path: 'crud-demo/update', component: UpdateUserComponent},
+  {path: 'crud-demo/update-password', component: UpdateUserPasswordComponent},
   {path: 'crud-demo/delete', component: DeleteUserComponent},
   {path: 'crud-demo/list', component: ListUsersComponent},
   {path: 'crud-post/create', component: CreatePostComponent},

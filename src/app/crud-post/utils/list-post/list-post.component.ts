@@ -6,36 +6,48 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppService } from 'src/app/app.service';
-import { Post } from 'src/app/interfaces/post';
+import { AppService, RowDetailService } from 'src/app/app.service';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import {  MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
+import { Post } from 'src/app/interfaces/post';
 
 @Component({
   selector: 'app-list-posts',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSortModule, MatCardModule],
+  imports: [CommonModule, MatTableModule, MatSortModule, MatCardModule,CrudPostSearchComponent],
   templateUrl: './list-post.component.html',
   styleUrls: ['./list-post.component.css'],
 })
 export class ListPostsComponent implements OnInit {
   posts: any;
+  foundPost: Post | any;
 
   constructor(
     private appService: AppService = Inject(AppService),
+    private rowDetailService: RowDetailService
   ) {}
 
   ngOnInit(): void {
+    this.rowDetailService.setRowDetail({fromUserPost:false});
     this.appService.getAllPosts().subscribe((posts) => {
       this.posts = posts;
       if (posts) {
         this.posts = posts;
-        console.log('onPostFound', this.posts);
+        console.log('onInitPostFound', this.posts);
       } else {
         this.posts= [];
       }
     });
+  }
+
+  onPostFound(post: Post | undefined) {
+    if (post) {
+      this.foundPost = post;
+      console.log('onPostFound', this.foundPost);
+    } else {
+      this.foundPost = undefined;
+    }
   }
 }

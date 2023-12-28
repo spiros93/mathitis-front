@@ -1,7 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Person } from './interfaces/person';
+import { Person, ChangePassword } from './interfaces/person';
 import { Post } from './interfaces/post';
 import { Credentials } from './interfaces/credentials';
 import { retry } from 'rxjs/operators';
@@ -69,10 +69,10 @@ export class AppService {
     return this.http.put<Person>(`http://localhost:3001/users/${id}`, user, { headers })
   }
 
-  updateUserPassword(user: Person){
+  updateUserPassword(user: ChangePassword){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     console.log("user " + user)
-    return this.http.put<Person>(`http://localhost:3001/users/password`, user, { headers })
+    return this.http.put<Person>(`http://localhost:3001/users/password/change`, user, { headers })
   }
 
   // NestJS calls
@@ -99,6 +99,17 @@ export class AppService {
   getAllPosts(){
     console.log("all posts")
     return this.http.get<Post[]>('http://localhost:3001/posts')
+  }
+
+  getAllPostsRegex(postTitle: string){
+    console.log("all posts")
+    return this.http.get<Post[]>(`http://localhost:3001/posts/title/regex?postTitle=${postTitle}`)
+  }
+
+  getUsersPostsRegex(userId: string,  postTitle: string){
+    console.log("getUsersPostsRegex " + userId)
+    const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
+    return this.http.get<Post[]>(`http://localhost:3001/posts/title/userid/regex?postTitle=${postTitle}&userId=${userId}`,{ headers })
   }
 
   getPostByUserId(id:string){

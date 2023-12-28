@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { AppService } from '../app.service';
+import { AppService, RowDetailService } from '../app.service';
 import { Credentials } from '../interfaces/credentials';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -21,12 +21,7 @@ import {NotificationHandlerComponent} from '../notification-handler/notification
 })
 
 export class LoginFormComponent {
-  // isLoggedIn= localStorage.getItem('access_token') ? new BehaviorSubject<boolean>(true) : new BehaviorSubject<boolean>(false);
-  // a = new BehaviorSubject<boolean>(false);
-  // if () {
-  //   this.isAdmin = new BehaviorSubject<boolean>(false);
-  // }
-  // isAdmin = new BehaviorSubject<boolean>(false);
+
   form = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
@@ -36,7 +31,8 @@ export class LoginFormComponent {
     private appService: AppService = Inject(AppService),
     private jwtHelperService: JwtHelperService = Inject(JwtHelperService),
     private router: Router = Inject(Router),
-    private notificationHandler : NotificationHandlerComponent
+    private notificationHandler : NotificationHandlerComponent,
+    private rowDetailService: RowDetailService
     ){}
 
 
@@ -52,10 +48,8 @@ export class LoginFormComponent {
         localStorage.setItem('username', decoded_token.username);
         localStorage.setItem('fullname', decoded_token.fullname);
         localStorage.setItem('photoUrl', decoded_token.photoUrl);
-        //var isAdmin = new BehaviorSubject<boolean>(false);
-        //isAdmin.next(decoded_token.isAdmin)
-        //console.log(this.isAdmin)
-        
+
+        this.rowDetailService.setRowDetail({isAdmin:decoded_token.isAdmin});
         this.appService.isLoggedIn.next(true);
         this.appService.fullname.next(decoded_token.fullname);
         this.appService.photoUrl.next(decoded_token.photoUrl);

@@ -11,10 +11,20 @@
       Title is required
     </div>
     </mat-form-field>
-    <button mat-raised-button color="primary" 
+    <button *ngIf="!fromUsersPost" mat-raised-button color="primary" 
     (click)="onSearch()" 
     [disabled]="!form.valid">
       Search
+    </button>
+    <button *ngIf="fromUsersPost" mat-raised-button color="primary" 
+    (click)="onSearchForUsersPosts()" 
+    [disabled]="!form.valid">
+      Search
+    </button>
+    <button mat-raised-button color="primary" 
+    (click)="reloadPage()"
+    >
+      View All Posts
     </button>
   </form>
   <mat-card *ngIf="form.controls.title.touched && !foundPost" class="error">

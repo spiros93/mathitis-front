@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Inject, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Person } from 'src/app/interfaces/person';
-import { AppService } from 'src/app/app.service';
+import { AppService, RowDetailService } from 'src/app/app.service';
 import { HttpClient } from '@angular/common/http';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
 import { PersonCardComponent } from 'src/app/person-card/person-card.component';
@@ -27,6 +27,7 @@ export class DeleteUserComponent {
     private appService: AppService = Inject(AppService),
     private http: HttpClient = Inject(HttpClient),
     private router: Router = Inject(Router),
+    private rowDetailService: RowDetailService,
     private notificationHandler : NotificationHandlerComponent
   ){}
 
@@ -67,14 +68,18 @@ export class DeleteUserComponent {
   onConfirm(iamSure: boolean){
     if(iamSure && this.foundUser){
       const id = this.foundUser._id ?? ''
-      const isAdmin=localStorage.getItem('is_admin');
+      let isAdmin = false;
+      this.rowDetailService.rowDetail$.subscribe(row => {
+        isAdmin = row ? row.fromUserPost: false;
+      });
+      
       this.appService.deleteUser(id).subscribe({
         next: (user) => {
           console.log(user);
           this.userNotFound = false;
           this.notificationHandler.onNotification("Success Delete User", 'top', 3);
           this.userDeleted.emit();
-          if(isAdmin === 'true'){
+          if(isAdmin){
             this.router.navigate(['/crud-demo/list']);
           }else{
             this.router.navigate(['/login']);

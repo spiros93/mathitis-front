@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
 import { Person } from 'src/app/interfaces/person';
 import { CrudUserFormComponent } from '../../utils/crud-user-form/crud-user-form.component';
-import { AppService } from 'src/app/app.service';
+import { AppService, RowDetailService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
@@ -27,6 +27,7 @@ export class UpdateUserComponent {
   constructor(
     private appService: AppService = Inject(AppService),
     private router: Router,
+    private rowDetailService: RowDetailService,
     private notificationHandler : NotificationHandlerComponent
   ) {}
 
@@ -57,14 +58,15 @@ export class UpdateUserComponent {
   onUpdate(user: Person) {
     console.log('onUpdate', user);
     const id = localStorage.getItem('user_id') ?? '';
-    const isAdmin = localStorage.getItem('is_admin');
+    let isAdmin = false;
+    this.rowDetailService.rowDetail$.subscribe(row => {
+      isAdmin = row ? row.isAdmin: false;
+    });
     user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.updateUser(user, id).subscribe((user) => {
-      if (isAdmin === 'true'){
-        console.log("1")
+      if (isAdmin){
         this.router.navigate(['/crud-demo/list']);
       }else{
-        console.log("2")
         this.router.navigate(['/crud-demo/read']);
       }
     }, err =>{

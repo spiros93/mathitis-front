@@ -9,12 +9,14 @@ import {
   EventEmitter
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppService} from 'src/app/app.service';
+import { AppService, RowDetailService} from 'src/app/app.service';
 import { Post } from 'src/app/interfaces/post';
 import { PostCardComponent } from 'src/app/post-card/post-card.component';
-import { CrudPostSearchComponent } from '../../utils/crud-post-search-userid/crud-post-search-userid.component';
+import { CrudPostSearchByUserIdComponent } from '../../utils/crud-post-search-userid/crud-post-search-userid.component';
 import { MatCardModule } from '@angular/material/card';
 import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form.component';
+import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
+
 
 @Component({
   selector: 'app-read-user-posts',
@@ -22,9 +24,10 @@ import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form
   imports: [
     CommonModule,
     PostCardComponent,
-    CrudPostSearchComponent,
+    CrudPostSearchByUserIdComponent,
     MatCardModule,
-    CrudPostFormComponent
+    CrudPostFormComponent,
+    CrudPostSearchComponent
   ],
   templateUrl: './read-user-posts.component.html',
   styleUrls: ['./read-user-posts.component.css'],
@@ -33,14 +36,17 @@ export class ReadUsersPostComponent implements OnInit{
   posts: any;
   foundPost: any;
   postId: any;
+  foundUsersPosts : any;
 
-  @Output() postFound = new EventEmitter<Post | undefined>();
-  
+  @Output() postFound = new EventEmitter<Post | undefined>();  
   constructor(
-    private appService: AppService = Inject(AppService)) {}
+    private appService: AppService = Inject(AppService),
+    private rowDetailService: RowDetailService
+    ) {}
 
   ngOnInit() {
     const id = localStorage.getItem('user_id') ?? '';
+    this.rowDetailService.setRowDetail({fromUserPost:true});
     this.appService.getPostByUserId(id).subscribe((post : any) => {
         if (post) {
           this.posts = post;
@@ -96,6 +102,15 @@ onUpdate(post: Post) {
   }, err => {
    // this.notificationHandler.onNotification(err.error.message, 'top', 3);
   });
+}
+
+onPostFound(post: Post | undefined) {
+  if (post) {
+    this.foundUsersPosts = post;
+    console.log('onPostFound', this.foundUsersPosts);
+  } else {
+    this.foundUsersPosts = undefined;
+  }
 }
 }
 

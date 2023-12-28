@@ -1,63 +1,59 @@
-import { Component, EventEmitter, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
-import { Person } from 'src/app/interfaces/person';
-import { CrudUserFormComponent } from '../../utils/crud-user-form/crud-user-form.component';
+import { Component, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { CommonModule, NgIf } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Person, ChangePassword } from 'src/app/interfaces/person';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { AppService } from 'src/app/app.service';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
 
 
 @Component({
   selector: 'app-update-user-password',
   standalone: true,
-  imports: [
-    CommonModule,
-    CrudUserSearchComponent,
-    CrudUserFormComponent,
-    MatCardModule
-  ],
-  templateUrl: './update-user.component.html',
-  styleUrls: ['./update-user.component.css'],
+  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatCardModule,],
+  templateUrl: './update-user-password.component.html',
+  styleUrls: ['./update-user-password.component.css'],
 })
-export class UpdateUserComponent {
-  foundUser: Person | undefined;
+export class UpdateUserPasswordComponent implements OnChanges {
+
+  @Input() title = 'Update Password';
+  @Input() personInput: Person | undefined;
+  @Output() person = new EventEmitter<Person>();
+
+ 
+  userId: string | undefined;
+  form = new FormGroup({
+    currentPassword: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+    newPassword: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+    confirmPassword: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+  })
 
   constructor(
     private appService: AppService = Inject(AppService),
     private router: Router,
-    private notificationHandler : NotificationHandlerComponent
-  ) {}
+    private notificationHandler : NotificationHandlerComponent) {}
 
-  ngOnInit(): void {
-    const id = localStorage.getItem('user_id') ?? '';
-    console.log(id);
-    this.appService.getUserById(id).subscribe((user) => {
-      
-      if (user) {
-        this.foundUser = user;
-        console.log('onPostFound', this.foundUser);
-      } else {
-        this.foundUser= undefined;
-      }
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['personInput']?.currentValue){
+      this.form.patchValue(changes['personInput'].currentValue)
+    }
   }
 
-  onUpdate(user: Person) {
-    console.log('onUpdate', user);
-    const id = localStorage.getItem('user_id') ?? '';
-    const isAdmin = localStorage.getItem('is_admin');
-    user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
-    this.appService.updateUser(user, id).subscribe((user) => {
-      if (isAdmin === 'true'){
-        console.log("1")
-        this.router.navigate(['/crud-demo/list']);
-      }else{
-        console.log("2")
-        this.router.navigate(['/crud-demo/read']);
-      }
+  onSubmit(){
+
+    this.appService.updateUserPassword(this.form.value as ChangePassword).subscribe(() => {
+     
+      this.router.navigate(['/home']);
+
     }, err =>{
       this.notificationHandler.onNotification(err.error.message, 'top', 3)});
+      this.person.emit(this.form.value as Person);
   }
+    
+    
+  
 }

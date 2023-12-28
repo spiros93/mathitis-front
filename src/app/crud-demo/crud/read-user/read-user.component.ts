@@ -3,15 +3,13 @@ import {
   Component,
   ElementRef,
   Inject,
-  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppService } from 'src/app/app.service';
+import { AppService, RowDetailService } from 'src/app/app.service';
 import { Person } from 'src/app/interfaces/person';
 import { PersonCardComponent } from 'src/app/person-card/person-card.component';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
 import { MatCardModule } from '@angular/material/card';
-import { JwtHelperService } from '@auth0/angular-jwt';
 //import {LoginFormComponent} from '../../../login-form/login-form.component'
 
 @Component({
@@ -32,7 +30,7 @@ export class ReadUserComponent {
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private jwtHelperService: JwtHelperService = Inject(JwtHelperService),
+    private rowDetailService: RowDetailService,
     //private LoginFormComponent: LoginFormComponent = Inject(LoginFormComponent)
   ) {}
 
@@ -46,11 +44,9 @@ export class ReadUserComponent {
   }
 
   ngOnInit(): void {
-    const access_token = localStorage.getItem('access_token') || '';
-    const decoded_token = this.jwtHelperService.decodeToken(
-      access_token
-    );
-    this.isAdmin$= decoded_token.isAdmin;
+    this.rowDetailService.rowDetail$.subscribe(row => {
+      this.isAdmin$ = row ? row.isAdmin: false;
+    });
     const id = localStorage.getItem('user_id') ?? '';
     this.appService.getUserById(id).subscribe((user) => {
       if (user) {
