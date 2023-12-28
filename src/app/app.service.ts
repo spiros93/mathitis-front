@@ -69,6 +69,12 @@ export class AppService {
     return this.http.put<Person>(`http://localhost:3001/users/${id}`, user, { headers })
   }
 
+  updateUserPassword(user: Person){
+    const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
+    console.log("user " + user)
+    return this.http.put<Person>(`http://localhost:3001/users/password`, user, { headers })
+  }
+
   // NestJS calls
 
   login(credentials: Credentials){
