@@ -10,7 +10,7 @@ import { Credentials } from '../interfaces/credentials';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {NotificationHandlerComponent} from '../notification-handler/notification-handler.component';
-import { BehaviorSubject } from 'rxjs';
+//import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login-form',
@@ -21,11 +21,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 
 export class LoginFormComponent {
-  a = new BehaviorSubject<boolean>(false);
-  if () {
-    this.isAdmin = new BehaviorSubject<boolean>(false);
-  }
-  isAdmin = new BehaviorSubject<boolean>(false);
+  // isLoggedIn= localStorage.getItem('access_token') ? new BehaviorSubject<boolean>(true) : new BehaviorSubject<boolean>(false);
+  // a = new BehaviorSubject<boolean>(false);
+  // if () {
+  //   this.isAdmin = new BehaviorSubject<boolean>(false);
+  // }
+  // isAdmin = new BehaviorSubject<boolean>(false);
   form = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
@@ -51,8 +52,9 @@ export class LoginFormComponent {
         localStorage.setItem('username', decoded_token.username);
         localStorage.setItem('fullname', decoded_token.fullname);
         localStorage.setItem('photoUrl', decoded_token.photoUrl);
-        this.isAdmin.next(decoded_token.isAdmin)
-        console.log(this.isAdmin)
+        //var isAdmin = new BehaviorSubject<boolean>(false);
+        //isAdmin.next(decoded_token.isAdmin)
+        //console.log(this.isAdmin)
         
         this.appService.isLoggedIn.next(true);
         this.appService.fullname.next(decoded_token.fullname);

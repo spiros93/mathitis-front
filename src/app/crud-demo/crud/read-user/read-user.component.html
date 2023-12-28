@@ -7,7 +7,7 @@
   <mat-card-content>
     <div class="fx-layout-column fx-gap--16px">
       
-      <app-crud-user-search *ngIf="isAdmin$ | async"
+      <app-crud-user-search *ngIf="isAdmin$"
         (userFound)="onUserFound($event)"
       ></app-crud-user-search>
 
@@ -28,7 +28,6 @@
         <mat-card-content>
           <p>Age: {{ foundUser.age }}</p>
           <p>Address: {{ foundUser.address }}</p>
-          <p>isAdmin: {{isAdmin$.value}}</p>
         </mat-card-content>
       </mat-card>
     </div>
