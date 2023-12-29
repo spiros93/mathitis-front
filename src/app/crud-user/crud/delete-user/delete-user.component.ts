@@ -9,6 +9,7 @@ import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/dange
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-delete-user',
@@ -28,23 +29,12 @@ export class DeleteUserComponent {
     private http: HttpClient = Inject(HttpClient),
     private router: Router = Inject(Router),
     private rowDetailService: RowDetailService,
-    private notificationHandler : NotificationHandlerComponent
+    private notificationHandler : NotificationHandlerComponent,
+    private SessionHandlerComponent: SessionHandlerComponent
   ){}
 
   onClick(){
     const id = this.userIdInput.nativeElement.value;
-    // this.appService.deleteUser(parseInt(id)).subscribe({
-    //   next: (user) => {
-    //     console.log(user);
-    //     this.userNotFound = false;
-    //     this.userDeleted.emit();
-    //   },
-    //   error: (error) => {
-    //     console.log(error)
-    //     this.userNotFound = true;
-    //   },
-    //   complete: () => {'Delete Operation Completed'}
-    // })
     this.http.delete<Person>(`http://localhost:3000/users/${id}`).subscribe({
         next: (user) => {
           console.log(user);
@@ -52,7 +42,9 @@ export class DeleteUserComponent {
           this.userDeleted.emit();
         },
         error: (error) => {
-          console.log(error);
+          if (error.status == 401) {
+            this.SessionHandlerComponent.onTokenExpared()
+          }
           this.userNotFound = true;
         },
         complete: () => {'Delete Operation Completed'}
@@ -60,9 +52,7 @@ export class DeleteUserComponent {
   }
 
   onUserFound(user: Person | undefined){
-    if(user){
-      this.foundUser = user;
-    }
+    this.foundUser = user;
   }
 
   onConfirm(iamSure: boolean){
@@ -80,13 +70,15 @@ export class DeleteUserComponent {
           this.notificationHandler.onNotification("Success Delete User", 'top', 3);
           this.userDeleted.emit();
           if(isAdmin){
-            this.router.navigate(['/crud-demo/list']);
+            this.router.navigate(['/crud-user/list']);
           }else{
             this.router.navigate(['/login']);
           }
         },
         error: (error) => {
-          console.log(error)
+          if (error.status == 401) {
+            this.SessionHandlerComponent.onTokenExpared()
+          }
           this.notificationHandler.onNotification(error.error.message, 'top', 3);
           this.userNotFound = true;
         },

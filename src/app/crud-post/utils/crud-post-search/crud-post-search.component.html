@@ -21,11 +21,13 @@
     [disabled]="!form.valid">
       Search
     </button>
-    <button mat-raised-button color="primary" 
-    (click)="reloadPage()"
-    >
-      View All Posts
-    </button>
+    <div class="gap-top inline">
+      <button mat-raised-button color="primary" 
+      (click)="reloadPage()"
+      >
+        View All Posts
+      </button>
+    </div>
   </form>
   <mat-card *ngIf="form.controls.title.touched && !foundPost" class="error">
     <mat-card-content class="fx-flex-align--center"

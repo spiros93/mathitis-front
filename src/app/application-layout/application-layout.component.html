@@ -28,7 +28,6 @@
       </mat-expansion-panel-header>
 
       <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/create">Create Post</a>
-      <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/read">Read Post</a>
       <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/update">Update Post</a>
       <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/delete">Delete Post</a>
       <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-post/read-user-posts">Posts From User</a>
@@ -43,10 +42,10 @@
       <mat-panel-title> User Actions</mat-panel-title>
     </mat-expansion-panel-header>
 
-    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/read">Read User</a>
-    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/update">Update User</a>
-    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/delete">Delete User</a>
-    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-demo/list">List Users</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-user/read">My Profile</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-user/update">Update My Profile</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-user/delete">Delete Profile</a>
+    <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="crud-user/list">List Users</a>
 
   </mat-expansion-panel>
 
@@ -72,8 +71,8 @@
         <span *ngIf="isLoggedIn$ | async"> 
             <button class = "left-gap" mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" >
               <mat-icon>
-              <span  mat-icon-button routerLink="crud-demo/read"> <mat-icon class = "left-gap" *ngIf="!(photoUrl$ | async) && (isLoggedIn$ | async)" > account_circle></mat-icon> </span>
-              <span  mat-icon-button routerLink="crud-demo/read"> <mat-icon class = "left-gap" *ngIf="photoUrl$ | async"><img class ="user" [src]="photoUrl$ | async"/></mat-icon> </span>
+              <span  mat-icon-button routerLink="crud-user/read"> <mat-icon class = "left-gap" *ngIf="!(photoUrl$ | async) && (isLoggedIn$ | async)" > account_circle></mat-icon> </span>
+              <span  mat-icon-button routerLink="crud-user/read"> <mat-icon class = "left-gap" *ngIf="photoUrl$ | async"><img class ="user" [src]="photoUrl$ | async"/></mat-icon> </span>
               </mat-icon>
               
             </button>
@@ -85,15 +84,15 @@
           </button>
           <button mat-menu-item>
             <mat-icon>perm_identity</mat-icon>
-            <span routerLink="crud-demo/read">View Your Profile</span>
+            <span routerLink="crud-user/read">View Your Profile</span>
           </button>
           <button mat-menu-item>
                 <mat-icon>edit</mat-icon>
-                <span routerLink="crud-demo/update">Update Your Profile</span>
+                <span routerLink="crud-user/update">Update Your Profile</span>
               </button>
           <button mat-menu-item>
                 <mat-icon>build</mat-icon>
-                <span routerLink="crud-demo/update-password">Change Your Password</span>
+                <span routerLink="crud-user/update-password">Change Your Password</span>
               </button>
           <button mat-menu-item>
                 <mat-icon>exit_to_app</mat-icon>

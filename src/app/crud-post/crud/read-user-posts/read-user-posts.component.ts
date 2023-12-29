@@ -16,6 +16,8 @@ import { CrudPostSearchByUserIdComponent } from '../../utils/crud-post-search-us
 import { MatCardModule } from '@angular/material/card';
 import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form.component';
 import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
 
 
 @Component({
@@ -41,22 +43,34 @@ export class ReadUsersPostComponent implements OnInit{
   @Output() postFound = new EventEmitter<Post | undefined>();  
   constructor(
     private appService: AppService = Inject(AppService),
-    private rowDetailService: RowDetailService
+    private rowDetailService: RowDetailService,
+    private SessionHandlerComponent: SessionHandlerComponent,
+    private notificationHandler : NotificationHandlerComponent
     ) {}
 
   ngOnInit() {
     const id = localStorage.getItem('user_id') ?? '';
     this.rowDetailService.setRowDetail({fromUserPost:true});
-    this.appService.getPostByUserId(id).subscribe((post : any) => {
+    this.appService.getPostByUserId(id).subscribe({
+      next : (post) => {
         if (post) {
           this.posts = post;
           console.log('onPostFound', this.posts);
         } else {
           this.posts= [];
-        }
+        }},
+        error: (error) => {
+          console.log(error)
+          if (error.status == 401) {
+            this.SessionHandlerComponent.onTokenExpared()
+          }
+        },
+        complete: () => {'Delete Operation Completed'}
+
       
     });
 }
+
 onDeletePost(id: string){
   var deleteUser = window.confirm('Are you absolutely sure you want to delete?');
   if (deleteUser) {
@@ -66,6 +80,9 @@ onDeletePost(id: string){
           window.location.reload() 
         },
         error: (error) => {
+          if (error.status == 401) {
+            this.SessionHandlerComponent.onTokenExpared()
+          }
           console.log(error)
         },
         complete: () => {'Delete Operation Completed'}
@@ -84,6 +101,10 @@ onUpdatePost(title : string, id : string){
     },
     error: (error) => {
       this.foundPost = undefined;
+      if (error.status == 401) {
+        this.SessionHandlerComponent.onTokenExpared()
+      }
+      this.notificationHandler.onNotification(error.message, 'top', 3);
       console.log(this.foundPost);
     },
     complete: () => {
@@ -100,7 +121,10 @@ onUpdate(post: Post) {
     window.location.reload()
     //this.notificationHandler.onNotification('Post updated successfully!', 'top', 3);
   }, err => {
-   // this.notificationHandler.onNotification(err.error.message, 'top', 3);
+    if (err.status == 401) {
+      this.SessionHandlerComponent.onTokenExpared()
+    }
+   this.notificationHandler.onNotification(err.error.message, 'top', 3);
   });
 }
 

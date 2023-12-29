@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-crud-post-search-userid',
@@ -37,7 +38,9 @@ export class CrudPostSearchByUserIdComponent {
     postTitle: new FormControl('')
   });
 
-  constructor(private appService: AppService = Inject(AppService)) {}
+  constructor(private appService: AppService = Inject(AppService),
+  private SessionHandlerComponent: SessionHandlerComponent,
+  ) {}
 
   onSearch() {
     const id = localStorage.getItem('user_id') ?? '';
@@ -49,6 +52,9 @@ export class CrudPostSearchByUserIdComponent {
       },
       error: (error) => {
         this.foundPost = undefined;
+        if (error.status == 401) {
+          this.SessionHandlerComponent.onTokenExpared()
+        }
         console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import {MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import {NotificationHandlerComponent} from '../../../notification-handler/notification-handler.component';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-create-post',
@@ -24,7 +25,8 @@ export class CreatePostComponent {
     private appService: AppService = Inject(AppService),
     private _snackBar: MatSnackBar,
     private router : Router,
-    private notificationHandler : NotificationHandlerComponent
+    private notificationHandler : NotificationHandlerComponent,
+    private SessionHandlerComponent: SessionHandlerComponent,
   ){}
 
   onPost(post: Post){
@@ -38,6 +40,9 @@ export class CreatePostComponent {
       this.router.navigate(["/crud-post/read-user-posts"])
       this.postCreated.emit();
     }, err => {
+      if (err.status == 401) {
+        this.SessionHandlerComponent.onTokenExpared()
+      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3);
     });
   }      

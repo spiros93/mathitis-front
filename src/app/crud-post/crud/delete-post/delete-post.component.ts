@@ -8,6 +8,8 @@ import { PostCardComponent } from 'src/app/post-card/post-card.component';
 import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-delete-post',
@@ -25,23 +27,13 @@ export class DeletePostComponent {
   constructor(
     private appService: AppService = Inject(AppService),
     private http: HttpClient = Inject(HttpClient),
-    private router: Router = Inject(Router)
+    private router: Router = Inject(Router),
+    private notificationHandler : NotificationHandlerComponent,
+    private SessionHandlerComponent: SessionHandlerComponent,
   ){}
 
   onClick(){
     const id = this.postIdInput.nativeElement.value;
-    // this.appService.deletePost(parseInt(id)).subscribe({
-    //   next: (post) => {
-    //     console.log(post);
-    //     this.postNotFound = false;
-    //     this.postDeleted.emit();
-    //   },
-    //   error: (error) => {
-    //     console.log(error)
-    //     this.postNotFound = true;
-    //   },
-    //   complete: () => {'Delete Operation Completed'}
-    // })
     this.http.delete<Post>(`http://localhost:3000/posts/${id}`).subscribe({
         next: (post) => {
           console.log(post);
@@ -49,6 +41,9 @@ export class DeletePostComponent {
           this.postDeleted.emit();
         },
         error: (error) => {
+          if (error.status == 401) {
+            this.SessionHandlerComponent.onTokenExpared()
+          }
           console.log(error);
           this.postNotFound = true;
         },
@@ -57,9 +52,7 @@ export class DeletePostComponent {
   }
 
   onPostFound(post: Post | undefined){
-    if(post){
-      this.foundPost = post;
-    }
+    this.foundPost = post;
   }
 
   onConfirm(iamSure: boolean){
@@ -69,10 +62,16 @@ export class DeletePostComponent {
         next: (post) => {
           console.log(post);
           this.postNotFound = false;
+          this.notificationHandler.onNotification("Success Delete Post", 'top', 3);
           this.postDeleted.emit();
+          this.router.navigate(['crud-post/read-user-posts']);
         },
         error: (error) => {
           console.log(error)
+          if (error.status == 401) {
+            this.SessionHandlerComponent.onTokenExpared()
+          }
+          this.notificationHandler.onNotification(error.error.message, 'top', 3);
           this.postNotFound = true;
         },
         complete: () => {'Delete Operation Completed'}

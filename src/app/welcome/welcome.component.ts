@@ -27,7 +27,7 @@ export class WelcomeComponent {
   }
 
   register(){
-    this.router.navigate(['/crud-demo/create']);
+    this.router.navigate(['/crud-user/create']);
   }
   
 }

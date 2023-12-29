@@ -7,7 +7,7 @@ import { DeletePostComponent } from '../crud/delete-post/delete-post.component';
 import { ListPostsComponent } from '../utils/list-post/list-post.component';
 
 @Component({
-  selector: 'app-crud-demo',
+  selector: 'app-crud-user',
   standalone: true,
   imports: [
     CommonModule, 

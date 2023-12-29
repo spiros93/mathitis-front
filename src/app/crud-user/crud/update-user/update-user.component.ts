@@ -7,6 +7,7 @@ import { AppService, RowDetailService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 
 @Component({
@@ -28,30 +29,29 @@ export class UpdateUserComponent {
     private appService: AppService = Inject(AppService),
     private router: Router,
     private rowDetailService: RowDetailService,
-    private notificationHandler : NotificationHandlerComponent
+    private notificationHandler : NotificationHandlerComponent,
+    private SessionHandlerComponent: SessionHandlerComponent,
   ) {}
-
-  // onUserFound(user: Person | undefined) {
-  //   if (user) {
-  //     this.foundUser = user;
-  //     console.log('onUserFound', this.foundUser);
-  //   } else {
-  //     this.foundUser = undefined;
-  //   }
-  // }
-
 
   ngOnInit(): void {
     const id = localStorage.getItem('user_id') ?? '';
     console.log(id);
-    this.appService.getUserById(id).subscribe((user) => {
-      
+    this.appService.getUserById(id).subscribe({
+      next: (user) => {
       if (user) {
         this.foundUser = user;
         console.log('onPostFound', this.foundUser);
       } else {
         this.foundUser= undefined;
-      }
+      }},
+      error: (error) => {
+        console.log(error)
+        if (error.status == 401) {
+          this.SessionHandlerComponent.onTokenExpared()
+        }
+      },
+      complete: () => {'Delete Operation Completed'}
+
     });
   }
 
@@ -65,11 +65,14 @@ export class UpdateUserComponent {
     user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.updateUser(user, id).subscribe((user) => {
       if (isAdmin){
-        this.router.navigate(['/crud-demo/list']);
+        this.router.navigate(['/crud-user/list']);
       }else{
-        this.router.navigate(['/crud-demo/read']);
+        this.router.navigate(['/crud-user/read']);
       }
     }, err =>{
+      if (err.status == 401) {
+        this.SessionHandlerComponent.onTokenExpared()
+      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3)});
   }
 }

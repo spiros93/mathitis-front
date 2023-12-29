@@ -7,6 +7,7 @@ import { AppService, RowDetailService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-update-user-from-list',
@@ -31,7 +32,8 @@ export class UpdateUserListComponent {
     private appService: AppService = Inject(AppService),
     private router: Router,
     private rowDetailService: RowDetailService,
-    private notificationHandler : NotificationHandlerComponent
+    private notificationHandler : NotificationHandlerComponent,
+    private SessionHandlerComponent: SessionHandlerComponent
   ) {}
 
   ngOnInit() {
@@ -41,10 +43,6 @@ export class UpdateUserListComponent {
       this.userId = row._id;
   });
   }
-// handleResults(searchObj : any) {
-//   console.log("ddddddddddddd")
-//  // this.data = searchObj
-// }
 
   onUpdate(user: Person) {
     console.log('onUpdate', user);
@@ -52,8 +50,11 @@ export class UpdateUserListComponent {
     user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.updateUser(user, id).subscribe((user) => {
       console.log(user);
-      this.router.navigate(['/crud-demo/list']);
+      this.router.navigate(['/crud-user/list']);
     }, err =>{
+      if (err.status == 401) {
+        this.SessionHandlerComponent.onTokenExpared()
+      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3)}
     );
   }

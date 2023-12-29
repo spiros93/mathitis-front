@@ -7,7 +7,7 @@ import { DeleteUserComponent } from '../crud/delete-user/delete-user.component';
 import { ListUsersComponent } from '../utils/list-users/list-users.component';
 
 @Component({
-  selector: 'app-crud-demo',
+  selector: 'app-crud-user',
   standalone: true,
   imports: [
     CommonModule, 
@@ -17,8 +17,8 @@ import { ListUsersComponent } from '../utils/list-users/list-users.component';
     DeleteUserComponent, 
     ListUsersComponent
   ],
-  templateUrl: './crud-demo.component.html',
-  styleUrls: ['./crud-demo.component.css']
+  templateUrl: './crud-user.component.html',
+  styleUrls: ['./crud-user.component.css']
 })
 export class CrudDemoComponent {
   crudOperation: string | undefined

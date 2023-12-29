@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-crud-post-search',
@@ -43,6 +44,7 @@ export class CrudPostSearchComponent {
   constructor(private appService: AppService = Inject(AppService),
   private rowDetailService: RowDetailService,
   private router: Router = Inject(Router),
+  private SessionHandlerComponent: SessionHandlerComponent,
   ) {}
 
   ngOnInit() {
@@ -65,6 +67,9 @@ export class CrudPostSearchComponent {
       },
       error: (error) => {
         this.foundPost = undefined;
+        if (error.status == 401) {
+          this.SessionHandlerComponent.onTokenExpared()
+        }
         console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },

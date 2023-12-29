@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
 import { Router } from '@angular/router';
+import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-list-users',
@@ -34,8 +35,8 @@ export class ListUsersComponent implements OnInit {
   foundUser: Person | undefined;
   dataSource!: MatTableDataSource<Person>;
 
-  mobileColumns: string[] = ['givenName', 'surName', 'photoURL'];
-  tabletColumns: string[] = [ 'givenName', 'surName', 'age', 'photoURL'];
+  mobileColumns: string[] = ['givenName', 'surName', 'photoURL', 'action'];
+  tabletColumns: string[] = [ 'givenName', 'surName', 'age', 'photoURL', 'action'];
   desktopColumns: string[] = [
     'givenName',
     'surName',
@@ -54,15 +55,27 @@ export class ListUsersComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router = Inject(Router),
     private rowDetailService: RowDetailService,
+    private SessionHandlerComponent: SessionHandlerComponent,
+
+    
   ) {}
 
   ngOnInit(): void {
-    this.appService.getAllUsers().subscribe((users) => {
-      this.users = users;
-
-      this.dataSource = new MatTableDataSource<Person>(this.users);
-      console.log(this.dataSource)
-      this.dataSource.sort = this.sort;
+    this.appService.getAllUsers().subscribe({
+      next: (users) => {
+        this.users = users;
+        this.dataSource = new MatTableDataSource<Person>(this.users);
+        console.log(this.dataSource)
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => {
+        console.log(error)
+        if (error.status == 401) {
+          this.SessionHandlerComponent.onTokenExpared()
+        }
+      },
+      complete: () => {'Delete Operation Completed'}
+    
     });
 
     this.breakpointObserver
@@ -103,6 +116,9 @@ export class ListUsersComponent implements OnInit {
           },
           error: (error) => {
             console.log(error)
+            if (error.status == 401) {
+              this.SessionHandlerComponent.onTokenExpared()
+            }
             //this.userNotFound = true;
           },
           complete: () => {'Delete Operation Completed'}
@@ -117,10 +133,13 @@ export class ListUsersComponent implements OnInit {
         //this.foundUser = user;
         //this.userFound.emit(this.foundUser);
         this.rowDetailService.setRowDetail(user);
-        this.router.navigate(["crud-demo/update-from-list"])
+        this.router.navigate(["crud-user/update-from-list"])
       
       },
       error: (error) => {
+        if (error.status == 401) {
+          this.SessionHandlerComponent.onTokenExpared()
+        }
         this.foundUser = undefined;
         console.log(this.foundUser);
       },
@@ -129,19 +148,5 @@ export class ListUsersComponent implements OnInit {
       },
     });
   }
-
-  // onConfirm( i: string, iamSure: boolean){
-  //   if(iamSure){
-  //     const id = i
-  //     this.appService.deleteUser(i).subscribe({
-  //       next: (user) => {
-  //         console.log(user);
-  //         //this.userNotFound = false;
-  //         this.deleteUser.emit();
-  //       },
-  //       complete: () => {'Delete Operation Completed'}
-  //     })
-  //   }
-  // }
 
 }
