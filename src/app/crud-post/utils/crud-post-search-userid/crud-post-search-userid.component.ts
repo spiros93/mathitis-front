@@ -47,13 +47,11 @@ export class CrudPostSearchByUserIdComponent {
     const id = localStorage.getItem('user_id') ?? '';
     this.appService.getPostByUserId(id).subscribe({
       next: (post) => {
-        console.log(post);
         this.foundPost = post;
         this.postFound.emit(this.foundPost);
       },
       error: (error) => {
         this.foundPost = undefined;
-        console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },
       complete: () => {

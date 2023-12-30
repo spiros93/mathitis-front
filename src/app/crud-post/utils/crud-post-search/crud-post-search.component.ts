@@ -61,13 +61,11 @@ export class CrudPostSearchComponent {
     const title = this.form.controls.title.value ?? '';
     this.appService.getAllPostsRegex(title).subscribe({
       next: (post) => {
-        console.log(post);
         this.foundPost = post;
         this.postFound.emit(this.foundPost);
       },
       error: (error) => {
         this.foundPost = undefined;
-        console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },
       complete: () => {
@@ -82,13 +80,11 @@ export class CrudPostSearchComponent {
     const userId = localStorage.getItem('user_id') || '';
     this.appService.getUsersPostsRegex(userId, title).subscribe({
       next: (post) => {
-        console.log(post);
         this.foundPost = post;
         this.postFound.emit(this.foundPost);
       },
       error: (error) => {
         this.foundPost = undefined;
-        console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },
       complete: () => {

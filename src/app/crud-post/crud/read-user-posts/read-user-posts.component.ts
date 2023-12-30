@@ -54,7 +54,6 @@ export class ReadUsersPostComponent implements OnInit{
       next : (post) => {
         if (post) {
           this.posts = post;
-          console.log('onPostFound', this.posts);
         } else {
           this.posts= [];
         }},
@@ -73,7 +72,6 @@ onDeletePost(id: string){
       this.AuthGuard.canActivate();
       this.appService.deletePost(id).subscribe({
         next: (user) => {
-          console.log(user);
           window.location.reload() 
         },
         error: (error) => {
@@ -86,7 +84,6 @@ onDeletePost(id: string){
 
 onUpdatePost(title : string, id : string){
   this.AuthGuard.canActivate();
-  console.log("post id " +title);
   const userId = localStorage.getItem('user_id') || '';
   this.appService.getPostByPostTitlerUserId(userId, title).subscribe({
     next: (post) => {
@@ -97,7 +94,6 @@ onUpdatePost(title : string, id : string){
     error: (error) => {
       this.foundPost = undefined;
       this.notificationHandler.onNotification(error.message, 'top', 3);
-      console.log(this.foundPost);
     },
     complete: () => {
       console.log('Operation Completed');
@@ -106,12 +102,9 @@ onUpdatePost(title : string, id : string){
 }
 
 onUpdate(post: Post) {
-  console.log('onUpdate', post);
   post.photoURL = post.photoURL?.length ==0 ? undefined : post.photoURL;
   this.appService.updatePost(post, this.postId).subscribe((post) => {
-    console.log(post);
     window.location.reload()
-    //this.notificationHandler.onNotification('Post updated successfully!', 'top', 3);
   }, err => {
    this.notificationHandler.onNotification(err.error.message, 'top', 3);
   });
@@ -120,7 +113,6 @@ onUpdate(post: Post) {
 onPostFound(post: Post | undefined) {
   if (post) {
     this.foundUsersPosts = post;
-    console.log('onPostFound', this.foundUsersPosts);
   } else {
     this.foundUsersPosts = undefined;
   }

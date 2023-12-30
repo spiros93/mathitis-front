@@ -24,7 +24,6 @@ export class CrudUserFormComponent implements OnChanges {
  
   userId: string | undefined;
   form = new FormGroup({
-    //id: new FormControl(''),
     givenName: new FormControl('', Validators.required),
     surName: new FormControl('', Validators.required),
     age: new FormControl(0, [Validators.required, Validators.min(18), Validators.max(120)]),
@@ -48,7 +47,6 @@ export class CrudUserFormComponent implements OnChanges {
 
   ngOnInit(): void {
    this.userId = localStorage.getItem('user_id') ?? undefined;
-   console.log(this.userId)
 
   }
 }

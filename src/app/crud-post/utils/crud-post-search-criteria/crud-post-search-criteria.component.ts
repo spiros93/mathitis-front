@@ -46,7 +46,6 @@ export class CrudPostSearchComponent {
   onSearch() {
     const userId =  this.form.controls.userId.value ? this.form.controls.userId.value : localStorage.getItem('user_id') ?? '';
     const postTitle = this.form.controls.searchTitle.value ?? '';
-    console.log("users post " +userId +" " +  postTitle);
     this.AuthGuard.canActivate();
     this.appService.getPostByPostTitlerUserId(userId, postTitle).subscribe({
       next: (post) => {
@@ -55,7 +54,6 @@ export class CrudPostSearchComponent {
       },
       error: (error) => {
         this.foundPost = undefined;
-        console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },
       complete: () => {

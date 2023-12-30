@@ -48,11 +48,9 @@ export class UpdateUserListComponent {
 
   onUpdate(user: Person) {
     this.AuthGuard.canActivate();
-    console.log('onUpdate', user);
     const id = this.userId || '';
     user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.updateUser(user, id).subscribe((user) => {
-      console.log(user);
       this.router.navigate(['/crud-user/list']);
     }, err =>{
       this.notificationHandler.onNotification(err.error.message, 'top', 3)}

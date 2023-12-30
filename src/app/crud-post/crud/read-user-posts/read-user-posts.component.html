@@ -12,7 +12,7 @@
       <p><strong>Created By: </strong>{{ post.username}}</p>
       
         <p mat-cell>
-          <button (click)="onDeletePost(post._id)" class="btn btn-danger btn-sm">Delete</button> | <button (click)="onUpdatePost(post.postTitle, post._id)" class="btn btn-danger btn-sm">Update</button>
+          <button (click)="onDeletePost(post._id)" class="btn btn-delete">Delete</button><button (click)="onUpdatePost(post.postTitle, post._id)" class="btn btn-update">Update</button>
         </p>
         <app-crud-post-form
         *ngIf="foundPost && post.postTitle === foundPost.postTitle"
@@ -34,7 +34,7 @@
       <p><strong>Created By: </strong>{{ post.username}}</p>
 
       <p mat-cell>
-        <button (click)="onDeletePost(post._id)" class="btn btn-danger btn-sm">Delete</button> | <button (click)="onUpdatePost(post.postTitle, post._id)" class="btn btn-danger btn-sm">Update</button>
+        <button (click)="onDeletePost(post._id)" class="btn btn-delete">Delete</button><button (click)="onUpdatePost(post.postTitle, post._id)" class="btn btn-update">Update</button>
       </p>
       <app-crud-post-form
       *ngIf="foundPost && post.postTitle === foundPost.postTitle"

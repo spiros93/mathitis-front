@@ -33,9 +33,7 @@ export class CreatePostComponent {
     post.photoURL = post.photoURL?.length ==0 ? undefined : post.photoURL;
     const username = localStorage.getItem('username') ?? '';
     post.username = username;
-    console.log(post);
     this.appService.addPost(post).subscribe(post => {
-      console.log("success");
       this.notificationHandler.onNotification('Post created successfully!', 'top', 3);
       this.router.navigate(["/crud-post/read-user-posts"])
       this.postCreated.emit();

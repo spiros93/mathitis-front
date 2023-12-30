@@ -66,7 +66,6 @@ export class ListUsersComponent implements OnInit {
       next: (users) => {
         this.users = users;
         this.dataSource = new MatTableDataSource<Person>(this.users);
-        console.log(this.dataSource)
         this.dataSource.sort = this.sort;
       },
       error: (error) => {
@@ -109,7 +108,6 @@ export class ListUsersComponent implements OnInit {
     if (deleteUser) {
         this.appService.deleteUser(i).subscribe({
           next: (user) => {
-            console.log(user);
             this.deleteUser.emit();
             window.location.reload() 
           },
@@ -125,16 +123,12 @@ export class ListUsersComponent implements OnInit {
     this.AuthGuard.canActivate();
     this.appService.getUserById(id).subscribe({
       next: (user) => {
-        console.log(user);
-        //this.foundUser = user;
-        //this.userFound.emit(this.foundUser);
         this.rowDetailService.setRowDetail(user);
         this.router.navigate(["crud-user/update-from-list"])
       
       },
       error: (error) => {
         this.foundUser = undefined;
-        console.log(this.foundUser);
       },
       complete: () => {
         console.log('Operation Completed');

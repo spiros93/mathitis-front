@@ -4,7 +4,6 @@ import { Injectable, inject } from '@angular/core';
 import { Person, ChangePassword } from './interfaces/person';
 import { Post } from './interfaces/post';
 import { Credentials } from './interfaces/credentials';
-import { retry } from 'rxjs/operators';
 import { JWTToken } from './interfaces/jwttoken';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -39,39 +38,31 @@ export class AppService {
   }
 
   getUserById(id:string){
-    console.log("user id" + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Person>(`http://localhost:3001/users/${id}`,{ headers })
   }
 
   getUserName(username:string){
-    console.log("user username" + username)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Person>(`http://localhost:3001/users/username/${username}`,{ headers })
   }
 
   addUser(user: Person){
-    console.log(user);
     return this.http.post<Person>('http://localhost:3001/users', user)
   }
 
   deleteUser(id:string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-   // const userId = localStorage.getItem('user_id')
     return this.http.delete<Person>(`http://localhost:3001/users/${id}`, { headers })
   }
 
   updateUser(user: Person, id: string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    console.log("id " +id)
-    console.log("user " + user)
-    //const userId = id :localStorage.getItem('user_id')
     return this.http.put<Person>(`http://localhost:3001/users/${id}`, user, { headers })
   }
 
   updateUserPassword(user: ChangePassword){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    console.log("user " + user)
     return this.http.put<Person>(`http://localhost:3001/users/password/change`, user, { headers })
   }
 
@@ -91,36 +82,29 @@ export class AppService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('fullname');
     localStorage.removeItem('photoUrl');
-    console.log ("logout " + localStorage.getItem('photoUrl'))
   }
 
   /************************************ post **********************************/
 
   getAllPosts(){
-    console.log("all posts")
     return this.http.get<Post[]>('http://localhost:3001/posts')
   }
 
   getAllPostsRegex(postTitle: string){
-    console.log("all posts")
     return this.http.get<Post[]>(`http://localhost:3001/posts/title/regex?postTitle=${postTitle}`)
   }
 
   getUsersPostsRegex(userId: string,  postTitle: string){
-    console.log("getUsersPostsRegex " + userId)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Post[]>(`http://localhost:3001/posts/title/userid/regex?postTitle=${postTitle}&userId=${userId}`,{ headers })
   }
 
   getPostByUserId(id:string){
-    console.log("post id " + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Post>(`http://localhost:3001/posts/userId/${id}`,{ headers })
   }
 
   getPostByPostTitlerUserId(id:string, postTitle:string){
-    //this.AuthGuard.canActivate()
-    console.log("post id title" + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Post>(`http://localhost:3001/posts/title/userId?postTitle=${postTitle}&userId=${id}`,{ headers })
   }
@@ -131,7 +115,6 @@ export class AppService {
   }
 
   addPost(post: Post){
-    console.log(post)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.post<Post>('http://localhost:3001/posts/', post, { headers })
   }
@@ -144,7 +127,6 @@ export class AppService {
 
   updatePost(post: Post, postId: string){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
-    console.log("postaaaaaa")
     return this.http.put<Post>(`http://localhost:3001/posts/${postId}`, post, { headers })
   }
 }

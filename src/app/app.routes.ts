@@ -17,9 +17,10 @@ import { UpdateUserListComponent } from "./crud-user/crud/update-user-from-list/
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
+  {path: '', component: WelcomeComponent},
   {path: 'home', component: WelcomeComponent},
   {path: 'login', component: LoginFormComponent},
-  {path: 'crud-user/create', component: CreateUserComponent , canActivate: [AuthGuard]},
+  {path: 'crud-user/create', component: CreateUserComponent },
   {path: 'crud-user/read', component: ReadUserComponent, canActivate: [AuthGuard]},
   {path: 'crud-user/update', component: UpdateUserComponent , canActivate: [AuthGuard]},
   {path: 'crud-user/update-password', component: UpdateUserPasswordComponent},

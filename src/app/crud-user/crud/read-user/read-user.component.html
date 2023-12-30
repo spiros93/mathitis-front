@@ -13,13 +13,18 @@
 
       <mat-card class="example-card" *ngIf="foundUser">
         <mat-card-header>
-          <div
+          <div *ngIf="foundUser.photoURL"
             mat-card-avatar
             [ngStyle]="{
               'background-image': 'url(' + foundUser.photoURL + ')',
-              'background-size': 'cover'
+              'background-size': 'cover',
+              'background-repeat':' round'
             }"
           ></div>
+          <div *ngIf="!foundUser.photoURL"
+            mat-card-avatar
+          ><mat-icon > account_circle></mat-icon></div>
+          
           <mat-card-title
             >{{ foundUser.givenName }} {{ foundUser.surName }}</mat-card-title
           >

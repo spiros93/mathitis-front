@@ -31,22 +31,6 @@ export class DeletePostComponent {
     private AuthGuard: AuthGuard
   ){}
 
-  onClick(){
-    const id = this.postIdInput.nativeElement.value;
-    this.http.delete<Post>(`http://localhost:3000/posts/${id}`).subscribe({
-        next: (post) => {
-          console.log(post);
-          this.postNotFound = false;
-          this.postDeleted.emit();
-        },
-        error: (error) => {
-          console.log(error);
-          this.postNotFound = true;
-        },
-        complete: () => {'Delete Operation Completed'}
-      })
-  }
-
   onPostFound(post: Post | undefined){
     this.foundPost = post;
   }
@@ -57,7 +41,6 @@ export class DeletePostComponent {
       const id = this.foundPost._id ?? ''
       this.appService.deletePost(id).subscribe({
         next: (post) => {
-          console.log(post);
           this.postNotFound = false;
           this.notificationHandler.onNotification("Success Delete Post", 'top', 3);
           this.postDeleted.emit();

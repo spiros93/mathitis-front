@@ -10,6 +10,9 @@
       <p>{{ post.postText}}</p>
       <p><strong>Created Date: </strong>{{ post.createdAt}}</p>
       <p><strong>Created By: </strong>{{ post.username}}</p>
+      <p *ngIf="isAdmin$" mat-cell>
+        <button (click)="onDeletePost(post._id)" class="btn btn-delete">Delete</button>
+      </p>
     </li>
   </ul>
 

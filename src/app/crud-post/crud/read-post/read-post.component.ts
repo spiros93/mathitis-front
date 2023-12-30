@@ -30,7 +30,6 @@ export class ReadPostComponent {
   onPostFound(post: Post | undefined) {
     if (post) {
       this.foundPost = post;
-      console.log('onPostFound', this.foundPost);
     } else {
       this.foundPost = undefined;
     }

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
 import { AuthGuard } from '../../../auth.guard';
+import { RoleHandlerComponent } from '../../../role-handler/role-handler.component';
 
 
 @Component({
@@ -28,21 +29,20 @@ export class UpdateUserComponent {
   constructor(
     private appService: AppService = Inject(AppService),
     private router: Router,
-    private rowDetailService: RowDetailService,
     private notificationHandler : NotificationHandlerComponent,
-    private AuthGuard: AuthGuard
+    private AuthGuard: AuthGuard,
+    private RoleHandlerComponent: RoleHandlerComponent
+
 
   ) {}
 
   ngOnInit(): void {
     const id = localStorage.getItem('user_id') ?? '';
-    console.log(id);
     this.AuthGuard.canActivate();
     this.appService.getUserById(id).subscribe({
       next: (user) => {
       if (user) {
         this.foundUser = user;
-        console.log('onPostFound', this.foundUser);
       } else {
         this.foundUser= undefined;
       }},
@@ -56,12 +56,9 @@ export class UpdateUserComponent {
 
   onUpdate(user: Person) {
     this.AuthGuard.canActivate();
-    console.log('onUpdate', user);
     const id = localStorage.getItem('user_id') ?? '';
-    let isAdmin = false;
-    this.rowDetailService.rowDetail$.subscribe(row => {
-      isAdmin = row ? row.isAdmin: false;
-    });
+    const isAdmin = this.RoleHandlerComponent.isAdmin();
+    
     user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
     this.appService.updateUser(user, id).subscribe((user) => {
       if (isAdmin){

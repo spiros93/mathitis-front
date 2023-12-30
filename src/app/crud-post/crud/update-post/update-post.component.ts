@@ -35,18 +35,15 @@ export class UpdatePostComponent {
     if (post) {
       this.foundPost = post;
       this.postId = post._id;
-      console.log('onPostFound', this.foundPost);
     } else {
       this.foundPost = undefined;
     }
   }
 
   onUpdate(post: Post) {
-    console.log('onUpdate', post);
     this.AuthGuard.canActivate();
     post.photoURL = post.photoURL?.length ==0 ? undefined : post.photoURL;
     this.appService.updatePost(post, this.postId).subscribe((post) => {
-      console.log(post);
       this.notificationHandler.onNotification('Post updated successfully!', 'top', 3);
       this.foundPost = undefined;
     }, err => {

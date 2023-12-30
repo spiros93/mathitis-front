@@ -12,7 +12,7 @@ import { Person } from 'src/app/interfaces/person';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { AuthGuard } from '../../../auth.guard';
 
@@ -36,7 +36,7 @@ export class CrudUserSearchComponent {
   @Output() userFound = new EventEmitter<Person | undefined>();
 
   form = new FormGroup({
-    id: new FormControl(''),
+    id: new FormControl('', Validators.required),
   });
 
   constructor(private appService: AppService = Inject(AppService),
@@ -49,13 +49,11 @@ export class CrudUserSearchComponent {
     const username = this.form.controls.id.value ?? '';
     this.appService.getUserName(username).subscribe({
       next: (user) => {
-        console.log(user);
         this.foundUser = user;
         this.userFound.emit(this.foundUser);
       },
       error: (error) => {
         this.foundUser = undefined;
-        console.log(this.foundUser);
         this.userFound.emit(this.foundUser);
       },
       complete: () => {

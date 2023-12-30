@@ -12,7 +12,7 @@
       <div *ngIf="foundPost" class="fx-layout-column fx-gap--16px">
         <mat-card class="example-card" *ngIf="foundPost">
           <mat-card-header>
-            <div
+            <div *ngIf="foundPost.photoURL"
               mat-card-avatar
               [ngStyle]="{
                 'background-image': 'url(' + foundPost.photoURL + ')',

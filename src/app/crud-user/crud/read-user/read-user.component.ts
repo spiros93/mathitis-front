@@ -5,11 +5,14 @@ import {
   Inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 import { AppService, RowDetailService } from 'src/app/app.service';
 import { Person } from 'src/app/interfaces/person';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
 import { MatCardModule } from '@angular/material/card';
 import { AuthGuard } from '../../../auth.guard';
+import { RoleHandlerComponent } from '../../../role-handler/role-handler.component';
+
 
 
 @Component({
@@ -19,6 +22,7 @@ import { AuthGuard } from '../../../auth.guard';
     CommonModule,
     CrudUserSearchComponent,
     MatCardModule,
+    MatIconModule
   ],
   templateUrl: './read-user.component.html',
   styleUrls: ['./read-user.component.css'],
@@ -29,8 +33,9 @@ export class ReadUserComponent {
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private rowDetailService: RowDetailService,
-    private AuthGuard: AuthGuard
+    private AuthGuard: AuthGuard,
+    private RoleHandlerComponent: RoleHandlerComponent
+
 
   ) {}
 
@@ -43,9 +48,7 @@ export class ReadUserComponent {
   }
 
   ngOnInit(): void {
-    this.rowDetailService.rowDetail$.subscribe(row => {
-      this.isAdmin$ = row ? row.isAdmin: false;
-    });
+    this.isAdmin$ = this.RoleHandlerComponent.isAdmin();
     this.AuthGuard.canActivate();
     const id = localStorage.getItem('user_id') ?? '';
     this.appService.getUserById(id).subscribe({

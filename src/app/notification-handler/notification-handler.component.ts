@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Post } from 'src/app/interfaces/post';
 import { MatCardModule } from '@angular/material/card';
 import {MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
