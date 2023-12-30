@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormComponent } from 'src/app/reactive-form/reactive-form.component';
 import { Person } from 'src/app/interfaces/person';
 import { AppService } from 'src/app/app.service';
 import { CrudUserFormComponent } from '../../utils/crud-user-form/crud-user-form.component';
@@ -12,7 +11,7 @@ import { NotificationHandlerComponent } from 'src/app/notification-handler/notif
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [CommonModule, ReactiveFormComponent, CrudUserFormComponent, MatCardModule],
+  imports: [CommonModule, CrudUserFormComponent, MatCardModule],
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css']
 })

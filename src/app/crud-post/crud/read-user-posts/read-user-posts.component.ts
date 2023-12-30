@@ -11,7 +11,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { AppService, RowDetailService} from 'src/app/app.service';
 import { Post } from 'src/app/interfaces/post';
-import { PostCardComponent } from 'src/app/post-card/post-card.component';
 import { CrudPostSearchByUserIdComponent } from '../../utils/crud-post-search-userid/crud-post-search-userid.component';
 import { MatCardModule } from '@angular/material/card';
 import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form.component';
@@ -25,7 +24,6 @@ import { AuthGuard } from '../../../auth.guard';
   standalone: true,
   imports: [
     CommonModule,
-    PostCardComponent,
     CrudPostSearchByUserIdComponent,
     MatCardModule,
     CrudPostFormComponent,

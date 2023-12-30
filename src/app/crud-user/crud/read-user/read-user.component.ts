@@ -7,7 +7,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { AppService, RowDetailService } from 'src/app/app.service';
 import { Person } from 'src/app/interfaces/person';
-import { PersonCardComponent } from 'src/app/person-card/person-card.component';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
 import { MatCardModule } from '@angular/material/card';
 import { AuthGuard } from '../../../auth.guard';
@@ -18,7 +17,6 @@ import { AuthGuard } from '../../../auth.guard';
   standalone: true,
   imports: [
     CommonModule,
-    PersonCardComponent,
     CrudUserSearchComponent,
     MatCardModule,
   ],

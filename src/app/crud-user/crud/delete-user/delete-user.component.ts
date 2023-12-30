@@ -4,7 +4,6 @@ import { Person } from 'src/app/interfaces/person';
 import { AppService, RowDetailService } from 'src/app/app.service';
 import { HttpClient } from '@angular/common/http';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
-import { PersonCardComponent } from 'src/app/person-card/person-card.component';
 import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
@@ -14,7 +13,7 @@ import { AuthGuard } from '../../../auth.guard';
 @Component({
   selector: 'app-delete-user',
   standalone: true,
-  imports: [CommonModule, CrudUserSearchComponent, PersonCardComponent, DangerAreYouSureComponent, MatCardModule],
+  imports: [CommonModule, CrudUserSearchComponent, DangerAreYouSureComponent, MatCardModule],
   templateUrl: './delete-user.component.html',
   styleUrls: ['./delete-user.component.css']
 })

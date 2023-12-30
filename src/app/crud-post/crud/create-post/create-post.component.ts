@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormComponent } from 'src/app/reactive-form-post/reactive-form-post.component';
 import { Post } from 'src/app/interfaces/post';
 import { AppService } from 'src/app/app.service';
 import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form.component';
@@ -13,7 +12,7 @@ import { AuthGuard } from '../../../auth.guard';
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [CommonModule, ReactiveFormComponent, CrudPostFormComponent, MatCardModule, NotificationHandlerComponent],
+  imports: [CommonModule, CrudPostFormComponent, MatCardModule, NotificationHandlerComponent],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css'],
 })

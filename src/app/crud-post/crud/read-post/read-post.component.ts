@@ -8,7 +8,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { AppService } from 'src/app/app.service';
 import { Post } from 'src/app/interfaces/post';
-import { PostCardComponent } from 'src/app/post-card/post-card.component';
 import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
 import { MatCardModule } from '@angular/material/card';
 
@@ -17,7 +16,6 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [
     CommonModule,
-    PostCardComponent,
     CrudPostSearchComponent,
     MatCardModule,
   ],
