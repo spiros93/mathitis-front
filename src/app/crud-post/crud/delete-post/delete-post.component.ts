@@ -9,7 +9,7 @@ import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/dange
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
 
 @Component({
   selector: 'app-delete-post',
@@ -29,7 +29,7 @@ export class DeletePostComponent {
     private http: HttpClient = Inject(HttpClient),
     private router: Router = Inject(Router),
     private notificationHandler : NotificationHandlerComponent,
-    private SessionHandlerComponent: SessionHandlerComponent,
+    private AuthGuard: AuthGuard
   ){}
 
   onClick(){
@@ -41,9 +41,6 @@ export class DeletePostComponent {
           this.postDeleted.emit();
         },
         error: (error) => {
-          if (error.status == 401) {
-            this.SessionHandlerComponent.onTokenExpared()
-          }
           console.log(error);
           this.postNotFound = true;
         },
@@ -57,6 +54,7 @@ export class DeletePostComponent {
 
   onConfirm(iamSure: boolean){
     if(iamSure && this.foundPost){
+      this.AuthGuard.canActivate();
       const id = this.foundPost._id ?? ''
       this.appService.deletePost(id).subscribe({
         next: (post) => {
@@ -68,9 +66,6 @@ export class DeletePostComponent {
         },
         error: (error) => {
           console.log(error)
-          if (error.status == 401) {
-            this.SessionHandlerComponent.onTokenExpared()
-          }
           this.notificationHandler.onNotification(error.error.message, 'top', 3);
           this.postNotFound = true;
         },

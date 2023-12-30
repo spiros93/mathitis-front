@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
 
 @Component({
   selector: 'app-crud-post-search-criteria',
@@ -40,13 +40,14 @@ export class CrudPostSearchComponent {
   });
 
   constructor(private appService: AppService = Inject(AppService),
-  private SessionHandlerComponent: SessionHandlerComponent,
+  private AuthGuard: AuthGuard
   ) {}
 
   onSearch() {
     const userId =  this.form.controls.userId.value ? this.form.controls.userId.value : localStorage.getItem('user_id') ?? '';
     const postTitle = this.form.controls.searchTitle.value ?? '';
-    console.log("users post " +userId +" " +  postTitle)
+    console.log("users post " +userId +" " +  postTitle);
+    this.AuthGuard.canActivate();
     this.appService.getPostByPostTitlerUserId(userId, postTitle).subscribe({
       next: (post) => {
         this.foundPost = post;
@@ -54,9 +55,6 @@ export class CrudPostSearchComponent {
       },
       error: (error) => {
         this.foundPost = undefined;
-        if (error.status == 401) {
-          this.SessionHandlerComponent.onTokenExpared()
-        }
         console.log(this.foundPost);
         this.postFound.emit(this.foundPost);
       },

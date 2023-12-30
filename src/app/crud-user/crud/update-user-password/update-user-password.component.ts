@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AppService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
 
 
 @Component({
@@ -37,7 +37,8 @@ export class UpdateUserPasswordComponent implements OnChanges {
     private appService: AppService = Inject(AppService),
     private router: Router,
     private notificationHandler : NotificationHandlerComponent,
-    private SessionHandlerComponent: SessionHandlerComponent) {}
+    private AuthGuard: AuthGuard
+) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['personInput']?.currentValue){
@@ -46,15 +47,10 @@ export class UpdateUserPasswordComponent implements OnChanges {
   }
 
   onSubmit(){
-
+    this.AuthGuard.canActivate();
     this.appService.updateUserPassword(this.form.value as ChangePassword).subscribe(() => {
-     
       this.router.navigate(['/home']);
-
     }, err =>{
-      if (err.status == 401) {
-        this.SessionHandlerComponent.onTokenExpared()
-      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3)});
       this.person.emit(this.form.value as Person);
   }

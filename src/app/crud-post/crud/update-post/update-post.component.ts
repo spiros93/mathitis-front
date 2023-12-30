@@ -6,7 +6,7 @@ import { CrudPostFormComponent } from '../../utils/crud-post-form/crud-post-form
 import { AppService } from 'src/app/app.service';
 import { MatCardModule } from '@angular/material/card';
 import {NotificationHandlerComponent} from '../../../notification-handler/notification-handler.component';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
 
 @Component({
   selector: 'app-update-post',
@@ -28,7 +28,7 @@ export class UpdatePostComponent {
   constructor(
     private appService: AppService = Inject(AppService),
     private notificationHandler : NotificationHandlerComponent,
-    private SessionHandlerComponent: SessionHandlerComponent,
+    private AuthGuard: AuthGuard
   ) {}
 
   onPostFound(post: Post | undefined) {
@@ -43,15 +43,13 @@ export class UpdatePostComponent {
 
   onUpdate(post: Post) {
     console.log('onUpdate', post);
+    this.AuthGuard.canActivate();
     post.photoURL = post.photoURL?.length ==0 ? undefined : post.photoURL;
     this.appService.updatePost(post, this.postId).subscribe((post) => {
       console.log(post);
       this.notificationHandler.onNotification('Post updated successfully!', 'top', 3);
       this.foundPost = undefined;
     }, err => {
-      if (err.status == 401) {
-        this.SessionHandlerComponent.onTokenExpared()
-      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3);
     });
   }

@@ -11,14 +11,16 @@ import { routes } from './app.routes';
 import { RowDetailService } from 'src/app/app.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {NotificationHandlerComponent} from './notification-handler/notification-handler.component';
-import {SessionHandlerComponent} from './session-handler/session-handler.component';
+import { AuthGuard } from './auth.guard';
 
 export function tokenGetter(){
   return localStorage.getItem('access_token');
 }
 
 export const appConfig: ApplicationConfig = {
+
   providers: [
+    [AuthGuard],
     //importProvidersFrom(HttpClientModule),
     importProvidersFrom(
       JwtModule.forRoot({
@@ -33,6 +35,5 @@ export const appConfig: ApplicationConfig = {
     RowDetailService,
     MatSnackBar,
     NotificationHandlerComponent,
-    SessionHandlerComponent
 ],
 };

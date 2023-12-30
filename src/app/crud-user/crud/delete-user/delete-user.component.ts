@@ -9,7 +9,7 @@ import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/dange
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
 
 @Component({
   selector: 'app-delete-user',
@@ -30,11 +30,13 @@ export class DeleteUserComponent {
     private router: Router = Inject(Router),
     private rowDetailService: RowDetailService,
     private notificationHandler : NotificationHandlerComponent,
-    private SessionHandlerComponent: SessionHandlerComponent
+    private AuthGuard: AuthGuard
+
   ){}
 
   onClick(){
     const id = this.userIdInput.nativeElement.value;
+    this.AuthGuard.canActivate();
     this.http.delete<Person>(`http://localhost:3000/users/${id}`).subscribe({
         next: (user) => {
           console.log(user);
@@ -42,9 +44,6 @@ export class DeleteUserComponent {
           this.userDeleted.emit();
         },
         error: (error) => {
-          if (error.status == 401) {
-            this.SessionHandlerComponent.onTokenExpared()
-          }
           this.userNotFound = true;
         },
         complete: () => {'Delete Operation Completed'}
@@ -76,9 +75,6 @@ export class DeleteUserComponent {
           }
         },
         error: (error) => {
-          if (error.status == 401) {
-            this.SessionHandlerComponent.onTokenExpared()
-          }
           this.notificationHandler.onNotification(error.error.message, 'top', 3);
           this.userNotFound = true;
         },

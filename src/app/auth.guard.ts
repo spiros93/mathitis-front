@@ -22,6 +22,8 @@ export class AuthGuard {
     ) {
       return true;
     } else {
+      alert("Your session has expired, Please login again!");
+      this.appService.logout();
       this.router.navigate(['/login']);
       return false;
     }

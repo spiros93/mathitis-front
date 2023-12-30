@@ -14,20 +14,21 @@ import { ListUsersComponent } from "./crud-user/utils/list-users/list-users.comp
 import { LoginFormComponent } from "./login-form/login-form.component";
 import { ReadUsersPostComponent } from "./crud-post/crud/read-user-posts/read-user-posts.component";
 import { UpdateUserListComponent } from "./crud-user/crud/update-user-from-list/update-user-from-list.component";
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   {path: 'home', component: WelcomeComponent},
   {path: 'login', component: LoginFormComponent},
-  {path: 'crud-user/create', component: CreateUserComponent},
-  {path: 'crud-user/read', component: ReadUserComponent},
-  {path: 'crud-user/update', component: UpdateUserComponent},
+  {path: 'crud-user/create', component: CreateUserComponent , canActivate: [AuthGuard]},
+  {path: 'crud-user/read', component: ReadUserComponent, canActivate: [AuthGuard]},
+  {path: 'crud-user/update', component: UpdateUserComponent , canActivate: [AuthGuard]},
   {path: 'crud-user/update-password', component: UpdateUserPasswordComponent},
-  {path: 'crud-user/delete', component: DeleteUserComponent},
-  {path: 'crud-user/list', component: ListUsersComponent},
-  {path: 'crud-post/create', component: CreatePostComponent},
-  {path: 'crud-post/read', component: ReadPostComponent},
-  {path: 'crud-post/update', component: UpdatePostComponent},
-  {path: 'crud-post/delete', component: DeletePostComponent},
+  {path: 'crud-user/delete', component: DeleteUserComponent , canActivate: [AuthGuard]},
+  {path: 'crud-user/list', component: ListUsersComponent , canActivate: [AuthGuard]},
+  {path: 'crud-post/create', component: CreatePostComponent , canActivate: [AuthGuard]},
+  {path: 'crud-post/read', component: ReadPostComponent , canActivate: [AuthGuard]},
+  {path: 'crud-post/update', component: UpdatePostComponent , canActivate: [AuthGuard]},
+  {path: 'crud-post/delete', component: DeletePostComponent , canActivate: [AuthGuard]},
   {path: 'crud-post/list', component: ListPostsComponent},
-  {path: 'crud-post/read-user-posts', component: ReadUsersPostComponent},
-  {path: 'crud-user/update-from-list', component: UpdateUserListComponent}];
+  {path: 'crud-post/read-user-posts', component: ReadUsersPostComponent , canActivate: [AuthGuard]},
+  {path: 'crud-user/update-from-list', component: UpdateUserListComponent , canActivate: [AuthGuard]}];

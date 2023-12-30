@@ -7,7 +7,7 @@ import { AppService, RowDetailService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
 
 
 @Component({
@@ -30,12 +30,14 @@ export class UpdateUserComponent {
     private router: Router,
     private rowDetailService: RowDetailService,
     private notificationHandler : NotificationHandlerComponent,
-    private SessionHandlerComponent: SessionHandlerComponent,
+    private AuthGuard: AuthGuard
+
   ) {}
 
   ngOnInit(): void {
     const id = localStorage.getItem('user_id') ?? '';
     console.log(id);
+    this.AuthGuard.canActivate();
     this.appService.getUserById(id).subscribe({
       next: (user) => {
       if (user) {
@@ -46,9 +48,6 @@ export class UpdateUserComponent {
       }},
       error: (error) => {
         console.log(error)
-        if (error.status == 401) {
-          this.SessionHandlerComponent.onTokenExpared()
-        }
       },
       complete: () => {'Delete Operation Completed'}
 
@@ -56,6 +55,7 @@ export class UpdateUserComponent {
   }
 
   onUpdate(user: Person) {
+    this.AuthGuard.canActivate();
     console.log('onUpdate', user);
     const id = localStorage.getItem('user_id') ?? '';
     let isAdmin = false;
@@ -70,9 +70,6 @@ export class UpdateUserComponent {
         this.router.navigate(['/crud-user/read']);
       }
     }, err =>{
-      if (err.status == 401) {
-        this.SessionHandlerComponent.onTokenExpared()
-      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3)});
   }
 }

@@ -14,7 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
+
 
 @Component({
   selector: 'app-crud-user-search',
@@ -39,10 +40,12 @@ export class CrudUserSearchComponent {
   });
 
   constructor(private appService: AppService = Inject(AppService),
-  private SessionHandlerComponent: SessionHandlerComponent,
+  private AuthGuard: AuthGuard
+
   ) {}
 
   onSearch() {
+    this.AuthGuard.canActivate();
     const username = this.form.controls.id.value ?? '';
     this.appService.getUserName(username).subscribe({
       next: (user) => {
@@ -51,9 +54,6 @@ export class CrudUserSearchComponent {
         this.userFound.emit(this.foundUser);
       },
       error: (error) => {
-        if (error.status == 401) {
-          this.SessionHandlerComponent.onTokenExpared()
-        }
         this.foundUser = undefined;
         console.log(this.foundUser);
         this.userFound.emit(this.foundUser);

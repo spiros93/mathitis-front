@@ -7,7 +7,8 @@ import { AppService, RowDetailService } from 'src/app/app.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { NotificationHandlerComponent } from 'src/app/notification-handler/notification-handler.component';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
+
 
 @Component({
   selector: 'app-update-user-from-list',
@@ -33,7 +34,8 @@ export class UpdateUserListComponent {
     private router: Router,
     private rowDetailService: RowDetailService,
     private notificationHandler : NotificationHandlerComponent,
-    private SessionHandlerComponent: SessionHandlerComponent
+    private AuthGuard: AuthGuard
+
   ) {}
 
   ngOnInit() {
@@ -45,6 +47,7 @@ export class UpdateUserListComponent {
   }
 
   onUpdate(user: Person) {
+    this.AuthGuard.canActivate();
     console.log('onUpdate', user);
     const id = this.userId || '';
     user.photoURL = user.photoURL?.length ==0 ? undefined : user.photoURL;
@@ -52,9 +55,6 @@ export class UpdateUserListComponent {
       console.log(user);
       this.router.navigate(['/crud-user/list']);
     }, err =>{
-      if (err.status == 401) {
-        this.SessionHandlerComponent.onTokenExpared()
-      }
       this.notificationHandler.onNotification(err.error.message, 'top', 3)}
     );
   }

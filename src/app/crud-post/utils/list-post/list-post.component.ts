@@ -12,7 +12,6 @@ import {  MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { CrudPostSearchComponent } from '../../utils/crud-post-search/crud-post-search.component';
 import { Post } from 'src/app/interfaces/post';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
 
 @Component({
   selector: 'app-list-posts',
@@ -27,8 +26,7 @@ export class ListPostsComponent implements OnInit {
 
   constructor(
     private appService: AppService = Inject(AppService),
-    private rowDetailService: RowDetailService,
-    private SessionHandlerComponent: SessionHandlerComponent,
+    private rowDetailService: RowDetailService
   ) {}
 
   ngOnInit(): void {
@@ -45,9 +43,6 @@ export class ListPostsComponent implements OnInit {
     },
     error: (error) => {
       console.log(error)
-      if (error.status == 401) {
-        this.SessionHandlerComponent.onTokenExpared()
-      }
     },
     complete: () => {'Delete Operation Completed'}
 

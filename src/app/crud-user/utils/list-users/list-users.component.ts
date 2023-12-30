@@ -16,7 +16,8 @@ import { MatCardModule } from '@angular/material/card';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DangerAreYouSureComponent } from '../../utils/danger-are-you-sure/danger-are-you-sure.component';
 import { Router } from '@angular/router';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
+
 
 @Component({
   selector: 'app-list-users',
@@ -55,12 +56,12 @@ export class ListUsersComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router = Inject(Router),
     private rowDetailService: RowDetailService,
-    private SessionHandlerComponent: SessionHandlerComponent,
-
+    private AuthGuard: AuthGuard
     
   ) {}
 
   ngOnInit(): void {
+    this.AuthGuard.canActivate();
     this.appService.getAllUsers().subscribe({
       next: (users) => {
         this.users = users;
@@ -70,9 +71,6 @@ export class ListUsersComponent implements OnInit {
       },
       error: (error) => {
         console.log(error)
-        if (error.status == 401) {
-          this.SessionHandlerComponent.onTokenExpared()
-        }
       },
       complete: () => {'Delete Operation Completed'}
     
@@ -106,6 +104,7 @@ export class ListUsersComponent implements OnInit {
   }
 
   onDeleteUser(i: string){
+    this.AuthGuard.canActivate();
     var deleteUser = window.confirm('Are you absolutely sure you want to delete?');
     if (deleteUser) {
         this.appService.deleteUser(i).subscribe({
@@ -116,10 +115,6 @@ export class ListUsersComponent implements OnInit {
           },
           error: (error) => {
             console.log(error)
-            if (error.status == 401) {
-              this.SessionHandlerComponent.onTokenExpared()
-            }
-            //this.userNotFound = true;
           },
           complete: () => {'Delete Operation Completed'}
         })
@@ -127,6 +122,7 @@ export class ListUsersComponent implements OnInit {
   }
 
   onUpdateUser(id : string){
+    this.AuthGuard.canActivate();
     this.appService.getUserById(id).subscribe({
       next: (user) => {
         console.log(user);
@@ -137,9 +133,6 @@ export class ListUsersComponent implements OnInit {
       
       },
       error: (error) => {
-        if (error.status == 401) {
-          this.SessionHandlerComponent.onTokenExpared()
-        }
         this.foundUser = undefined;
         console.log(this.foundUser);
       },

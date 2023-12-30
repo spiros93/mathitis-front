@@ -8,7 +8,6 @@ import { retry } from 'rxjs/operators';
 import { JWTToken } from './interfaces/jwttoken';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-
 const NESTJS_API = 'http://localhost:3001/'
 
 
@@ -31,7 +30,8 @@ export class AppService {
   photoUrl= localStorage.getItem('photoUrl') ? new BehaviorSubject<string>(localStorage.getItem('photoUrl') || '') : new BehaviorSubject<string>('');
 
 
-  constructor(private http: HttpClient = inject(HttpClient)) { }
+  constructor(private http: HttpClient = inject(HttpClient)
+  ) { }
 
   getAllUsers(){
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
@@ -119,6 +119,7 @@ export class AppService {
   }
 
   getPostByPostTitlerUserId(id:string, postTitle:string){
+    //this.AuthGuard.canActivate()
     console.log("post id title" + id)
     const headers = { 'authorization': 'Bearer '+  localStorage.getItem('access_token')}
     return this.http.get<Post>(`http://localhost:3001/posts/title/userId?postTitle=${postTitle}&userId=${id}`,{ headers })

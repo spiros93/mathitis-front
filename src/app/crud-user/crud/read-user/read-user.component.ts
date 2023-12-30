@@ -10,7 +10,8 @@ import { Person } from 'src/app/interfaces/person';
 import { PersonCardComponent } from 'src/app/person-card/person-card.component';
 import { CrudUserSearchComponent } from '../../utils/crud-user-search/crud-user-search.component';
 import { MatCardModule } from '@angular/material/card';
-import { SessionHandlerComponent } from 'src/app/session-handler/session-handler.component';
+import { AuthGuard } from '../../../auth.guard';
+
 
 @Component({
   selector: 'app-read-user',
@@ -31,7 +32,8 @@ export class ReadUserComponent {
   constructor(
     private appService: AppService = Inject(AppService),
     private rowDetailService: RowDetailService,
-    private SessionHandlerComponent: SessionHandlerComponent,
+    private AuthGuard: AuthGuard
+
   ) {}
 
   onUserFound(user: Person | undefined) {
@@ -46,6 +48,7 @@ export class ReadUserComponent {
     this.rowDetailService.rowDetail$.subscribe(row => {
       this.isAdmin$ = row ? row.isAdmin: false;
     });
+    this.AuthGuard.canActivate();
     const id = localStorage.getItem('user_id') ?? '';
     this.appService.getUserById(id).subscribe({
       next: (user) => {
@@ -56,9 +59,6 @@ export class ReadUserComponent {
       }},
       error: (error) => {
         console.log(error)
-        if (error.status == 401) {
-          this.SessionHandlerComponent.onTokenExpared()
-        }
       },
       complete: () => {'Delete Operation Completed'}
     });
